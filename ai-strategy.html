@@ -197,6 +197,27 @@
   .note.warn{ border-left-color: var(--red); }
   .note.todo{ border-left-color: var(--text-faint); color: var(--text-faint); }
 
+  .video-card{
+    display: grid; grid-template-columns: 48px 1fr; gap: 18px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); padding: 22px;
+  }
+  .video-card .play{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--bg-card-2); border: 1px solid var(--green-dim);
+    color: var(--green); display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .video-card h4{ font-family: var(--font-display); font-weight: 500; font-size: 16px; margin-bottom: 6px; }
+  .video-card p{ font-size: 13.5px; color: var(--text-dim); margin-bottom: 14px; }
+  .video-card .watch-link{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--green); text-decoration: none;
+    border: 1px solid var(--green-dim); border-radius: 100px;
+    padding: 7px 14px;
+  }
+  .video-card .watch-link:hover{ background: var(--green-dim); color: var(--text); }
+
   footer{ padding: 48px 24px 0; color: var(--text-faint); font-size: 13px; }
   footer a{ color: var(--text-dim); text-decoration: none; }
   footer a:hover{ color: var(--green); }
@@ -245,6 +266,7 @@
       <a href="#import">导入官方策略</a>
       <a href="#basic-settings">基本设置这一页</a>
       <a href="#logic">策略逻辑:写判断代码</a>
+      <a href="#knowledge">知识点:反弹信号详解</a>
     </div>
   </nav>
 
@@ -810,6 +832,22 @@
 
       <div class="note warn">
         <strong>代码注释里自带的一个坑。</strong>官方在跌破拉黑那段标了个 ⚠️:<code>add_blacklist</code> 在纯「代币实时流」模式下是<strong>空操作</strong> —— 代码照跑不报错,但黑名单实际没写进去。用实时流触发的话,上线后要去实时日志里确认一遍到底有没有生效。
+      </div>
+    </div>
+  </section>
+
+  <section id="knowledge">
+    <div class="wrap">
+      <h2>知识点</h2>
+      <p class="section-sub">配合策略引擎一起看的专题讲解,陆续补充。</p>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>反弹信号详解</h4>
+          <p>拆解「反弹」这类信号是怎么判定的、背后看的是哪些数据,以及在策略引擎里怎么配合使用。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/677" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
       </div>
     </div>
   </section>
