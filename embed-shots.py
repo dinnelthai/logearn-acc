@@ -44,6 +44,7 @@ SETTINGS = {
     "chart-headmenu": {"crop": (60, 735, 520, 1130), "scale": 2, "narrow": False},
     # 工具栏细条,裁出来放大 2 倍才看得清 USD / 市值
     "chart-usd-mcap": {"crop": (300, 25, 1250, 160), "scale": 2, "narrow": False},
+    "faq-usd-toggle": {"crop": (300, 25, 1250, 160), "scale": 2, "narrow": False},
     # 弹窗类,裁到弹窗本身再限宽 460px
     "stage2-normal":  {"crop": (565, 80, 1230, 1445), "scale": 1, "narrow": True},
     "stage2-feature": {"crop": None, "scale": 1, "narrow": True},
@@ -115,16 +116,20 @@ def main():
             cfg = dict(DEFAULT, **SETTINGS.get(slot, {}))
             b64, size = encode(path, cfg)
             cls = "shot-frame narrow" if cfg["narrow"] else "shot-frame"
-            old = ('<div class="shot-frame pending">\n'
-                   '          截图待补充 · %s\n'
-                   '        </div>' % slot)
-            new = ('<div class="%s">\n'
-                   '          <img src="data:image/jpeg;base64,%s" alt="%s">\n'
-                   '        </div>' % (cls, b64, slot))
-            if old not in html:
+            placeholder_re = re.compile(
+                r'(<div class="shot-frame pending">\n)'
+                r'(\s+)截图待补充 · %s\n'
+                r'(\s+)(</div>)' % re.escape(slot)
+            )
+            if not placeholder_re.search(html):
                 print("  ! %s 的占位框格式对不上,跳过" % slot)
                 continue
-            html = html.replace(old, new)
+
+            def repl(m, cls=cls, b64=b64, slot=slot):
+                img = '<img src="data:image/jpeg;base64,%s" alt="%s">' % (b64, slot)
+                return '<div class="%s">\n' % cls + m.group(2) + img + '\n' + m.group(3) + m.group(4)
+
+            html = placeholder_re.sub(repl, html)
             filled.append((slot, os.path.basename(path), size, page))
 
         if html != original:
