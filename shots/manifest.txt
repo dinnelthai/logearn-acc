@@ -1,0 +1,17 @@
+# 槽位	源文件(img/ 下)
+ai-engine-panel	Strategy/detal.jpg
+chart-headmenu	image-1785501859464.webp
+chart-log	image-1785501899085.webp
+chart-usd-mcap	image-1785501887819.webp
+detail-entry	image-1785501968055.webp
+grid-order	Strategy/trade_setting.png
+import-dialog	Strategy/import2.jpg
+import-entry	Strategy/import1.jpg
+official-strategy-1	Strategy/home 1.jpg
+official-strategy-2	Strategy/Home2.jpg
+stage2-normal	image-1785501961745.webp
+strategy-logic	Strategy/code.jpg
+strategy-trade-config	Strategy/trade.jpg
+trench-entry	image-1785501953089.webp
+trench-feature	image-1785501938579.png
+trench-normal	image-1785501947157.png
