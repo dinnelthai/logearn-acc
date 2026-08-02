@@ -58,7 +58,28 @@
   }
   .lede{ margin-top: 20px; font-size: 17px; color: var(--text-dim); max-width: 560px; }
 
-  section{ padding: 64px 24px; border-bottom: 1px solid var(--line); }
+  .toc-nav{
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,13,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .toc-nav .wrap{
+    display: flex; gap: 22px; overflow-x: auto;
+    padding-top: 14px; padding-bottom: 14px;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .toc-nav .wrap::-webkit-scrollbar{ display: none; }
+  .toc-nav a{
+    flex: none;
+    font-size: 13.5px; color: var(--text-dim);
+    text-decoration: none; white-space: nowrap;
+    padding: 4px 0; border-bottom: 2px solid transparent;
+  }
+  .toc-nav a:hover{ color: var(--text); }
+  .toc-nav a.active{ color: var(--green); border-bottom-color: var(--green); }
+
+  section{ padding: 64px 24px; border-bottom: 1px solid var(--line); scroll-margin-top: 56px; }
   section:last-of-type{ border-bottom: none; }
   h2{ font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 8px; }
   .section-sub{ color: var(--text-dim); font-size: 15px; margin-bottom: 36px; max-width: 560px; }
@@ -217,7 +238,17 @@
     </div>
   </header>
 
-  <section>
+  <nav class="toc-nav">
+    <div class="wrap">
+      <a href="#zones">四个露头的地方</a>
+      <a href="#official-strategies">官方推荐的三大策略</a>
+      <a href="#import">导入官方策略</a>
+      <a href="#basic-settings">基本设置这一页</a>
+      <a href="#logic">策略逻辑:写判断代码</a>
+    </div>
+  </nav>
+
+  <section id="zones">
     <div class="wrap">
       <h2>四个露头的地方</h2>
       <p class="section-sub">同一套东西,在界面上有四个入口,别搞混。</p>
@@ -263,7 +294,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="official-strategies">
     <div class="wrap">
       <h2>官方推荐的三大策略</h2>
       <p class="section-sub">引擎里预置了三条官方策略,都在运营中,带实盘数据。可以只当信号看,也可以直接开自动交易挂单。</p>
@@ -422,7 +453,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="import">
     <div class="wrap">
       <h2>导入官方策略</h2>
       <p class="section-sub">不用一个参数一个参数手配。官方把三大策略导出成了文本,粘进来就能直接用。</p>
@@ -511,7 +542,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="basic-settings">
     <div class="wrap">
       <h2>基本设置这一页</h2>
       <p class="section-sub">导入之后所有参数都已经带过来了,这页主要是拿来核对和微调的。真要动的一般只有生效时间段和买单金额。</p>
@@ -678,7 +709,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="logic">
     <div class="wrap">
       <h2>策略逻辑:写判断代码</h2>
       <p class="section-sub">基本设置管的是「什么时候触发、命中了怎么下单」,策略逻辑管的是「命中之后到底要不要它」。这里是一段 JavaScript,平台把数据塞进 <code>ctx</code>,你写代码决定放行还是排除。</p>
@@ -786,6 +817,25 @@
   <footer>
     <div class="wrap"><a href="index.html">← 返回 LogEarn 知识库</a> · 产品使用说明</div>
   </footer>
+
+  <script>
+    (function(){
+      var links = Array.prototype.slice.call(document.querySelectorAll('.toc-nav a'));
+      var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+      function onScroll(){
+        var pos = window.scrollY + 80;
+        var current = sections[0];
+        sections.forEach(function(sec){
+          if(sec && sec.offsetTop <= pos) current = sec;
+        });
+        links.forEach(function(a){
+          a.classList.toggle('active', sections[links.indexOf(a)] === current);
+        });
+      }
+      document.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
 
 </body>
 </html>
