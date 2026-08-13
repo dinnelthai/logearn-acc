@@ -5,6 +5,9 @@ chart-log	image-1785501899085.webp
 chart-usd-mcap	image-1785501887819.webp
 clear-cache	Strategy/clear-cache.jpg
 copy-code	Strategy/copycode.jpg
+credits-bill	bill.jpg
+credits-buy	buy.jpg
+credits-recharge	des.jpg
 detail-entry	image-1785501968055.webp
 faq-usd-toggle	image-1785501887819.webp
 grid-order	Strategy/trade_setting.png
@@ -21,3 +24,8 @@ suxing-vol-follow	Strategy/wake-case.jpg
 trench-entry	image-1785501953089.webp
 trench-feature	image-1785501938579.png
 trench-normal	image-1785501947157.png
+vip-buy	buy1.jpg
+vip-cards	vip1.jpg
+vip-evm	desevm.jpg
+vip-l4	L4.jpg
+vip-recharge	des1.jpg

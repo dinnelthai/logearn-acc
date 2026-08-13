@@ -60,6 +60,10 @@ SETTINGS = {
     "strategy-trade-config": {"crop": None, "scale": 1, "narrow": False},
     "grid-order":            {"crop": None, "scale": 1, "narrow": False},
     "strategy-logic":        {"crop": None, "scale": 1, "narrow": False},
+    # 购买 Credits:充值弹窗和购买按钮是宽图,消费账单是竖长弹窗限宽
+    "credits-recharge":      {"crop": None, "scale": 1, "narrow": False},
+    "credits-buy":           {"crop": None, "scale": 1, "narrow": False},
+    "credits-bill":          {"crop": None, "scale": 1, "narrow": True},
 }
 DEFAULT = {"crop": None, "scale": 1, "narrow": False}
 
