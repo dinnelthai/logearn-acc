@@ -64,6 +64,8 @@ SETTINGS = {
     "credits-recharge":      {"crop": None, "scale": 1, "narrow": False},
     "credits-buy":           {"crop": None, "scale": 1, "narrow": False},
     "credits-bill":          {"crop": None, "scale": 1, "narrow": True},
+    # 实战案例:竖版海报图,原图即可,限宽显示
+    "case-layooo":           {"crop": None, "scale": 1, "narrow": True},
 }
 DEFAULT = {"crop": None, "scale": 1, "narrow": False}
 

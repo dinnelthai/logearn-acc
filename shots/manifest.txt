@@ -1,5 +1,6 @@
 # 槽位	源文件(img/ 下)
 ai-engine-panel	Strategy/detal.jpg
+case-layooo	1.jpg
 chart-headmenu	image-1785501859464.webp
 chart-log	image-1785501899085.webp
 chart-usd-mcap	image-1785501887819.webp
