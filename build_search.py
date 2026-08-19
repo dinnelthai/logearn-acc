@@ -25,6 +25,15 @@ def build(folder):
             anchor=(m.group(2) or '') if m else ''
             body=clean(html[start:end])[:1800]
             if body: out.append({'title':title,'heading':heading,'text':body,'url':name+('#'+anchor if anchor else '')})
+        # FAQ-style expandable answers need their own records; otherwise a long
+        # page is truncated before later questions can ever appear in search.
+        for m in re.finditer(r'<details[^>]*class="[^"]*qa[^"]*"[^>]*>(.*?)</details>',html,re.S|re.I):
+            block=m.group(0); inner=m.group(1)
+            summary=re.search(r'<summary[^>]*>(.*?)</summary>',inner,re.S|re.I)
+            if not summary: continue
+            ident=re.search(r'\bid="([^"]+)"',block[:block.find('>')])
+            heading=clean(summary.group(1)); body=clean(inner[summary.end():])[:1800]
+            out.append({'title':title,'heading':heading,'text':body,'url':name+('#'+ident.group(1) if ident else '')})
     return out
 
 for lang,folder in [('zh',ROOT),('en',ROOT/'en')]:
