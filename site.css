@@ -1,0 +1,18 @@
+.kb-nav-toggle{position:fixed;top:16px;left:16px;z-index:60;border:1px solid var(--line,#24302a);background:var(--bg-card,#121512);color:var(--text,#e9efe9);border-radius:9px;padding:8px 11px;cursor:pointer;font:inherit}
+.kb-sidebar{position:fixed;inset:0 auto 0 0;width:260px;z-index:50;background:#0d110f;border-right:1px solid var(--line,#24302a);padding:24px 18px;overflow:auto;transform:translateX(-100%);transition:transform .2s ease}
+.kb-sidebar.open{transform:translateX(0)}
+.kb-sidebar-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 20px 46px;font-weight:600}
+.kb-sidebar-close{border:0;background:transparent;color:var(--text-dim,#8ea092);font-size:20px;cursor:pointer}
+.kb-nav-group{margin:18px 0 7px;padding:0 10px;color:var(--text-faint,#718075);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.kb-sidebar a{display:block;padding:9px 10px;border-radius:8px;color:var(--text-dim,#8ea092);text-decoration:none;font-size:14px}
+.kb-sidebar a:hover,.kb-sidebar a[aria-current="page"]{color:var(--text,#e9efe9);background:var(--bg-card-2,#171b17)}
+.kb-sidebar a[aria-current="page"]{box-shadow:inset 2px 0 var(--green,#3ddc84)}
+.kb-sidebar .site-search{margin:0 0 14px}.kb-sidebar .site-search input{font-size:13px;padding:9px 10px}
+.kb-overlay{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:none}.kb-overlay.open{display:block}
+.kb-breadcrumb{max-width:900px;margin:0 auto;padding:14px 24px;color:var(--text-faint,#718075);font-size:12px}
+.kb-breadcrumb a{color:var(--text-dim,#8ea092);text-decoration:none}
+.kb-pager{max-width:900px;margin:44px auto 0;padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line,#24302a)}
+.kb-pager a{padding:14px 16px;border:1px solid var(--line,#24302a);border-radius:10px;color:var(--text,#e9efe9);text-decoration:none;font-size:14px}.kb-pager a:last-child{text-align:right}.kb-pager small{display:block;color:var(--text-faint,#718075);margin-bottom:3px}
+.kb-updated{max-width:900px;margin:0 auto;padding:0 24px;color:var(--text-faint,#718075);font-size:12px}
+@media(min-width:1180px){.kb-sidebar{transform:none}.kb-nav-toggle,.kb-sidebar-close,.kb-overlay{display:none!important}body{padding-left:260px}.kb-sidebar-head{margin-left:10px}}
+@media(max-width:640px){.kb-pager{grid-template-columns:1fr}.kb-pager a:last-child{text-align:left}.kb-breadcrumb{padding-left:64px}}
