@@ -1,0 +1,98 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>导入与更新策略 — LogEarn</title><meta name="description" content="从官方仓库导入策略，并理解顶部操作入口。"><link rel="icon" href="../shots/logo.png"><link rel="stylesheet" href="../ai-article.css"><link rel="stylesheet" href="../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../" data-kb-page="ai-strategy.html" data-kb-alt="../en/ai/import.html"><header class="guide-intro"><div class="eyebrow">AI 策略专题</div><h1>导入与更新策略</h1><p>从官方仓库导入策略，并理解顶部操作入口。</p></header><nav class="guide-local" aria-label="AI 策略专题"><a class="guide-link" href="quick-start.html">快速开始</a><a class="guide-link" href="strategies.html">官方策略怎么选</a><a class="guide-link" href="import.html" aria-current="page">导入与更新策略</a><a class="guide-link" href="settings.html">基本设置与交易参数</a><a class="guide-link" href="logic.html">策略逻辑与 ctx</a><a class="guide-link" href="cases.html">实战案例与延伸阅读</a></nav><main><section id="import">
+    <div class="wrap">
+      <h2>导入官方策略</h2>
+      <p class="section-sub">不用一个参数一个参数手配。官方把三大策略导出成了文本,粘进来就能直接用。</p>
+
+      <div class="zones">
+        <div class="zone">
+          <div class="num">1</div>
+          <div>
+            <h4>拿到策略文本</h4>
+            <p>去 <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a> 打开 <code>import.txt</code>,把里面的内容整段复制。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">2</div>
+          <div>
+            <h4>点右上角「导入」</h4>
+            <p>在「我的策略」页面顶栏最右边,挨着 <code>+ 新增策略</code>。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">3</div>
+          <div>
+            <h4>粘贴,点「导入」</h4>
+            <p>弹窗里只有一个输入框,提示写着「粘贴导出的策略文本」。粘进去点绿色的 <code>导入</code>,策略就出现在列表里了 —— <strong>所有参数一次性带过来,不用再手配</strong>。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shot-block" style="margin-top:40px;">
+        <div class="shot-num"><span class="dot">1</span>导入入口</div>
+        <div class="shot-frame">
+          <img src="../shots/import-entry.jpg" alt="import-entry" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">顶栏右侧的 <code>导入</code>,红箭头指的位置。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>导入弹窗</div>
+        <div class="shot-frame narrow">
+          <img src="../shots/import-dialog.jpg" alt="import-dialog" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">一个输入框加两个按钮,没别的选项。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">3</span>复制策略代码</div>
+        <div class="shot-frame">
+          <img src="../shots/copy-code.jpg" alt="copy-code" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">去 <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a> 打开 <code>code.js</code>,把里面的内容整段复制到「策略逻辑」里。</p>
+      </div>
+
+      <div class="note">
+        <strong>导入是「导出」的反向操作。</strong>每条策略卡右上角都有个 <code>导出</code>,点了会生成一段文本 —— 那段文本就是这里要粘的东西。所以除了官方策略,社群里互相发的策略也是这么传的。
+      </div>
+
+      <h3 class="sub">顶栏上还有什么</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>位置</th>
+            <th>是什么</th>
+          </tr>
+          <tr>
+            <td class="name-col">我的策略(6/14)</td>
+            <td>括号是「开启中 / 总共建了几条」。旁边 <code>全部</code> <code>开启中</code> <code>已停止</code> 三个按钮按状态筛。</td>
+          </tr>
+          <tr>
+            <td class="name-col">所有策略日志</td>
+            <td>所有策略的触发记录汇总。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略模版(7)</td>
+            <td>官方给的现成模版,7 套。和导入是两条路 —— 模版是站内直接套,导入是粘文本。</td>
+          </tr>
+          <tr>
+            <td class="name-col">使用教程</td>
+            <td>官方文档入口。</td>
+          </tr>
+          <tr>
+            <td class="name-col">3H / 1D / 7D / 30D / 全部</td>
+            <td>右上角的时间范围。切了之后下面每条策略的柱状图和胜率分布跟着变 —— <strong>同一条策略在 1D 和 30D 下数字完全不一样</strong>,对比之前先确认档位一致。</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ 新增分组</td>
+            <td>策略多了之后分组用。默认只有一个 <code>全部</code>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ 新增策略</td>
+            <td>从零手配一条,流程见下一节。</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  </main><script src="../site.js"></script><script src="../search.js"></script></body></html>

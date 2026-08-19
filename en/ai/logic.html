@@ -1,0 +1,106 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Strategy Logic and ctx — LogEarn</title><meta name="description" content="Understand decision code, ctx data, and rejection rules."><link rel="icon" href="../../shots/logo.png"><link rel="stylesheet" href="../../ai-article.css"><link rel="stylesheet" href="../../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../../" data-kb-page="ai-strategy.html" data-kb-alt="../../ai/logic.html"><header class="guide-intro"><div class="eyebrow">AI Strategy Guide</div><h1>Strategy Logic and ctx</h1><p>Understand decision code, ctx data, and rejection rules.</p></header><nav class="guide-local" aria-label="AI strategy guides"><a class="guide-link" href="quick-start.html">Quick Start</a><a class="guide-link" href="strategies.html">Choosing an Official Strategy</a><a class="guide-link" href="import.html">Importing and Updating</a><a class="guide-link" href="settings.html">Settings and Trading Parameters</a><a class="guide-link" href="logic.html" aria-current="page">Strategy Logic and ctx</a><a class="guide-link" href="cases.html">Trading Cases and Further Reading</a></nav><main><section id="logic">
+    <div class="wrap">
+      <h2>Strategy Logic: Writing the Decision Code</h2>
+      <p class="section-sub">Basic Settings controls "when it triggers and how orders are placed on a hit"; Strategy Logic controls "whether you actually want it once it hits." This is a block of JavaScript — the platform loads data into <code>ctx</code>, and your code decides whether to let a token through or exclude it.</p>
+
+      <div class="note warn">
+        <strong>Pasting code replaces the whole block — it doesn't append.</strong> The editor always holds exactly one script. When you get new code, <strong>select all and delete the existing content before pasting</strong> — appending it below leaves two blocks of logic stacked on top of each other, which at best duplicates checks and at worst throws errors outright. Remember to click <code>保存策略</code> (Save Strategy) in the top right after editing.
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-frame">
+          <img src="../../shots/strategy-logic.jpg" alt="strategy-logic" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">The Strategy Logic tab. The row at the top shows this strategy's most recently matched tokens; below it is the code editor.</p>
+      </div>
+
+      <h3 class="sub">Common Patterns in the Code</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>Pattern</th>
+            <th>What It Does</th>
+          </tr>
+          <tr>
+            <td class="name-col">return false</td>
+            <td><strong>Excludes this token</strong> — it doesn't match. Every "veto" block in the screenshot returns false as soon as it finds a problem.</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.log.error(...)</td>
+            <td>Writes a log line, viewable in the <code>实时日志</code> (Live Logs) tab. It's worth logging the reason and the actual values while excluding a token — otherwise once it's live you won't know why something didn't match.</td>
+          </tr>
+          <tr>
+            <td class="name-col">|| {} and Array.isArray(...)</td>
+            <td>A safety fallback before reading data. Some data sources aren't available under certain trigger methods (see the table below), and without a fallback this throws an error outright.</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">What's Attached to ctx</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>Data Source</th>
+            <th>What's in It</th>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.chip_analysis</td>
+            <td>Chip/holder distribution analysis. The screenshot uses <code>above_percent</code>, <code>below_percent</code>, and <code>top5_holders</code> (an array of the top five holders).</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.holders</td>
+            <td>The holder list, an array — you can <code>slice(0, 30)</code> to get the Top 30. Each entry has <code>address</code>, <code>total_hold_percent</code> (share of holdings), and <code>transfer_in_percent</code> (share transferred in).</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.logearn</td>
+            <td>LogEarn's own data; the screenshot uses <code>token_address</code>, <code>mcap</code> (current market cap), and <code>max_up_mcap</code> (all-time-high market cap).</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.kline_and_indicators</td>
+            <td>K-line and technical indicators.</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.gmgn</td>
+            <td>Data from GMGN.</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>Which data you can access depends on the trigger method.</strong> Signal-Triggered and Strategy-Triggered can use everything; <strong>Token Live-Stream-Triggered only has <code>logearn</code> and <code>signals</code></strong> — writing <code>ctx.holders</code> or <code>ctx.chip_analysis</code> in a live-stream strategy gets you nothing, so those <code>|| {}</code> fallback lines can't be skipped.
+      </div>
+
+      <h3 class="sub">What the Code in the Screenshot Does</h3>
+      <p class="section-sub">The official code is a classic "veto" pattern — it checks one thing after another, excluding a token as soon as it trips a red flag; only if it clears every check does it count as a match.</p>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>Check</th>
+            <th>Logic</th>
+          </tr>
+          <tr>
+            <td class="name-col">Blacklisted Address</td>
+            <td>If a blacklisted address shows up in the Top 30 holders, exclude the token immediately.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Single Wallet Holding Too Much</td>
+            <td>If any single wallet in the Top 5 by holdings has a share <code>&gt; 10%</code>, exclude the token — this guards against a whale dumping.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Where the Top Holders' Tokens Came From</td>
+            <td>If any Top 5 address has a <strong>transferred-in</strong> share <code>&gt; 5%</code>, exclude the token. This requires the top holders' positions to have come mainly from buying, since a high transferred-in share suggests distribution or a rat-trading wallet.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Breaking Below the 0.86 Fib Level</td>
+            <td>The low is fixed at 0, the high is the all-time-high market cap <code>max_up_mcap</code>, so the 0.86 retracement level = <code>max_up_mcap × 0.14</code>. If the current market cap breaks below this line, the token is blacklisted. <strong>It only looks at the current market cap</strong>, not the whole K-line history, so it won't wrongly exclude a token just because it "once broke below" that level in the past.</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note warn">
+        <strong>A gotcha built right into the code comments.</strong> The official team flagged the breakdown-blacklist block with a ⚠️: <code>add_blacklist</code> is a <strong>no-op</strong> under pure "Token Live Stream" mode — the code runs without erroring, but the blacklist entry is never actually written. If you're using Live-Stream-Triggered, go check the live logs after going live to confirm whether it's actually taking effect.
+      </div>
+    </div>
+  </section>
+
+  </main><script src="../../site.js"></script><script src="../../search.js"></script></body></html>

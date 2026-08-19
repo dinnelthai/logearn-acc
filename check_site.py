@@ -6,7 +6,7 @@ from urllib.parse import unquote, urlsplit
 import sys
 
 ROOT=Path(__file__).parent
-FILES=list(ROOT.glob('*.html'))+list((ROOT/'en').glob('*.html'))
+FILES=list(ROOT.glob('*.html'))+list((ROOT/'ai').glob('*.html'))+list((ROOT/'en').glob('*.html'))+list((ROOT/'en/ai').glob('*.html'))
 
 class Parser(HTMLParser):
     def __init__(self): super().__init__(); self.links=[]; self.images=[]; self.ids=[]; self.meta=[]

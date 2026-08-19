@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 策略引擎 — LogEarn</title>
+  <meta name="description" content="AI 策略引擎 · LogEarn 产品知识库">
+<link rel="icon" type="image/png" href="shots/logo.png">
+<style>
+  :root{
+    --bg: #0b0f0d;
+    --bg-card: #121512;
+    --bg-card-2: #171b17;
+    --line: #24302a;
+    --green: #3ddc84;
+    --green-dim: #1f5c3f;
+    --amber: #f2b544;
+    --red: #e05a4e;
+    --text: #e9efe9;
+    --text-dim: #8ea092;
+    --text-faint: #718075;
+    --font-display: 'Space Grotesk', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-ui); line-height: 1.7;
+    padding: 0 0 120px;
+  }
+  .wrap{ max-width: 820px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero{
+    padding: 90px 24px 70px;
+    border-bottom: 1px solid var(--line);
+    background: radial-gradient(ellipse 600px 300px at 15% 0%, rgba(61,220,132,0.10), transparent 70%);
+  }
+  .backlink{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim);
+    text-decoration: none; margin-bottom: 22px;
+  }
+  .backlink:hover{ color: var(--green); }
+  .brand{ display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+  .brand img{ width: 36px; height: 36px; border-radius: 9px; }
+  .brand span{ font-family: var(--font-display); font-weight: 500; font-size: 18px; letter-spacing: -0.01em; }
+  .eyebrow{
+    font-family: var(--font-display);
+    font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--green); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before{ content: ""; width: 18px; height: 1px; background: var(--green); }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 500; font-size: 38px; line-height: 1.25; letter-spacing: -0.01em;
+    max-width: 600px;
+  }
+  .lede{ margin-top: 20px; font-size: 17px; color: var(--text-dim); max-width: 560px; }
+
+  .toc-nav{
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11,15,13,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .toc-nav .wrap{
+    display: flex; gap: 22px; overflow-x: auto;
+    padding-top: 14px; padding-bottom: 14px;
+    -ms-overflow-style: none; scrollbar-width: none;
+  }
+  .toc-nav .wrap::-webkit-scrollbar{ display: none; }
+  .toc-nav a{
+    flex: none;
+    font-size: 13.5px; color: var(--text-dim);
+    text-decoration: none; white-space: nowrap;
+    padding: 4px 0; border-bottom: 2px solid transparent;
+  }
+  .toc-nav a:hover{ color: var(--text); }
+  .toc-nav a.active{ color: var(--green); border-bottom-color: var(--green); }
+
+  section{ padding: 64px 24px; border-bottom: 1px solid var(--line); scroll-margin-top: 56px; }
+  section:last-of-type{ border-bottom: none; }
+  h2{ font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 8px; }
+  .section-sub{ color: var(--text-dim); font-size: 15px; margin-bottom: 36px; max-width: 560px; }
+  h3.sub{ font-family: var(--font-display); font-weight: 500; font-size: 17px; margin: 48px 0 8px; }
+
+  .zones{ display: grid; gap: 12px; }
+  .zone{
+    display: grid; grid-template-columns: 34px 1fr; gap: 16px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); padding: 18px 20px;
+  }
+  .zone .num{
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--bg-card-2); border: 1px solid var(--green-dim);
+    color: var(--green); font-family: var(--font-display);
+    font-size: 12px; display: flex; align-items: center; justify-content: center;
+    margin-top: 3px;
+  }
+  .zone h4{ font-family: var(--font-display); font-weight: 500; font-size: 15.5px; margin-bottom: 4px; }
+  .zone p{ font-size: 13.5px; color: var(--text-dim); }
+
+  .shot-block{ margin-bottom: 56px; }
+  .shot-block:last-child{ margin-bottom: 0; }
+  .shot-num{
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display);
+    font-size: 14px; font-weight: 500;
+    color: var(--green); margin-bottom: 14px;
+  }
+  .shot-num .dot{
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--bg-card-2); border: 1px solid var(--green-dim);
+    display: flex; align-items: center; justify-content: center; font-size: 12px;
+  }
+  .shot-frame{
+    position: relative;
+    border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden; background: var(--bg-card);
+  }
+  .shot-frame img{ display: block; width: 100%; height: auto; }
+  .shot-frame.narrow{ max-width: 460px; margin: 0 auto; }
+  .shot-frame.pending{
+    min-height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    border-style: dashed;
+    color: var(--text-faint); font-size: 13px; text-align: center;
+    padding: 40px 24px;
+  }
+  .callout{
+    position: absolute;
+    border: 1.5px dashed var(--red); border-radius: 6px;
+    background: rgba(224,90,78,0.08); pointer-events: none;
+  }
+  .callout-label{
+    position: absolute;
+    background: var(--red); color: #2a0d0a;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px; white-space: nowrap;
+  }
+  .shot-caption{ margin-top: 12px; font-size: 14px; color: var(--text-dim); }
+  .shot-caption code, .zone code{
+    background: var(--bg-card-2); border: 1px solid var(--line);
+    padding: 2px 7px; border-radius: 5px; font-size: 12.5px;
+    color: var(--amber); font-family: ui-monospace, monospace;
+  }
+
+  .table-scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .param-table{ width: 100%; border-collapse: collapse; font-size: 14.5px; min-width: 620px; }
+  .param-table th{
+    text-align: left; font-family: var(--font-display);
+    font-weight: 500; font-size: 12.5px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-faint);
+    padding: 0 16px 14px 0; border-bottom: 1px solid var(--line);
+  }
+  .param-table td{
+    padding: 16px 16px 16px 0; border-bottom: 1px solid var(--line);
+    vertical-align: top; color: var(--text-dim);
+  }
+  .param-table tr:last-child td{ border-bottom: none; }
+  .param-table .name-col{ color: var(--text); white-space: nowrap; }
+  .filter-val{
+    display: inline-block;
+    background: var(--bg-card-2); border: 1px solid var(--line);
+    padding: 2px 8px; border-radius: 5px; font-size: 12.5px;
+    color: var(--amber); font-family: ui-monospace, monospace; white-space: nowrap;
+  }
+
+  /* 三大策略对比:列多,手机上保留横向滚动,不堆叠 */
+  .compare-table{ width: 100%; border-collapse: collapse; font-size: 14px; min-width: 580px; }
+  .compare-table th{
+    text-align: left; font-family: var(--font-display);
+    font-weight: 500; font-size: 14px; color: var(--text);
+    padding: 0 16px 14px 0; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .compare-table th:first-child{
+    font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--text-faint); font-weight: 500;
+  }
+  .compare-table td{
+    padding: 13px 16px 13px 0; border-bottom: 1px solid var(--line);
+    color: var(--text-dim); vertical-align: top;
+  }
+  .compare-table tr:last-child td{ border-bottom: none; }
+  .compare-table .metric{ color: var(--text-faint); white-space: nowrap; }
+  .compare-table .hi{ color: var(--green); font-family: var(--font-display); font-size: 15px; }
+
+  .note{
+    margin-top: 40px; padding: 16px 18px;
+    border: 1px solid var(--line); border-left: 3px solid var(--amber);
+    border-radius: 0 8px 8px 0; background: var(--bg-card);
+    font-size: 13.5px; color: var(--text-dim);
+  }
+  .note.warn{ border-left-color: var(--red); }
+  .note.todo{ border-left-color: var(--text-faint); color: var(--text-faint); }
+
+  .video-card{
+    display: grid; grid-template-columns: 48px 1fr; gap: 18px;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); padding: 22px;
+  }
+  .video-card .play{
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--bg-card-2); border: 1px solid var(--green-dim);
+    color: var(--green); display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .video-card h4{ font-family: var(--font-display); font-weight: 500; font-size: 16px; margin-bottom: 6px; }
+  .video-card p{ font-size: 13.5px; color: var(--text-dim); margin-bottom: 14px; }
+  .video-card .watch-link{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--green); text-decoration: none;
+    border: 1px solid var(--green-dim); border-radius: 100px;
+    padding: 7px 14px;
+  }
+  .video-card .watch-link:hover{ background: var(--green-dim); color: var(--text); }
+  .video-card + .video-card{ margin-top: 16px; }
+
+  .strategy-tabs{ margin-top: 40px; }
+  .tab-header{
+    display: flex; gap: 8px; border-bottom: 1px solid var(--line);
+  }
+  .tab-btn{
+    background: transparent; border: none; border-bottom: 2px solid transparent;
+    padding: 10px 16px; color: var(--text-dim); font-size: 13.5px;
+    cursor: pointer; font-family: var(--font-ui);
+  }
+  .tab-btn:hover{ color: var(--text); }
+  .tab-btn.active{ color: var(--green); border-bottom-color: var(--green); }
+  .tab-panel{ display: none; padding-top: 24px; }
+  .tab-panel.active{ display: block; }
+
+  footer{ padding: 48px 24px 0; color: var(--text-faint); font-size: 13px; }
+  footer a{ color: var(--text-dim); text-decoration: none; }
+  footer a:hover{ color: var(--green); }
+
+  @media (max-width: 640px){
+    .wrap{ padding: 0 20px; }
+    header.hero{ padding: 56px 20px 44px; }
+    h1{ font-size: 27px; }
+    .lede{ font-size: 15.5px; }
+    section{ padding: 44px 20px; }
+    h2{ font-size: 19px; }
+    .section-sub{ font-size: 14px; margin-bottom: 26px; }
+    .shot-block{ margin-bottom: 40px; }
+    .callout-label{ font-size: 10.5px; padding: 3px 7px; }
+    .table-scroll{ overflow: visible; }
+    /* 对比表列太多,堆叠没法看,这里保留横向滚动 */
+    .table-scroll.keep{ overflow-x: auto; }
+    .param-table{ min-width: 0; }
+    .param-table tr:first-child{ display: none; }
+    .param-table tr{ display: block; padding: 18px 0; border-bottom: 1px solid var(--line); }
+    .param-table tr:last-child{ border-bottom: none; }
+    .param-table td{ display: block; padding: 0; border: none; }
+    .param-table td + td{ margin-top: 6px; }
+  }
+</style>
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="lang-switch" style="text-align:right;margin-bottom:8px;"><a href="en/ai-strategy.html" style="color:var(--text-dim);text-decoration:none;font-size:13px;">EN / English</a></div>
+      <div class="wrap">
+      <a class="backlink" href="index.html">← 返回知识库</a>
+      <div class="brand">
+        <img src="shots/logo.png" alt="LogEarn logo">
+        <span>LogEarn</span>
+      </div>
+      <div class="eyebrow">产品使用</div>
+      <h1>AI 策略引擎</h1>
+      <p class="lede">策略引擎在产品里有好几个露头的地方 —— 顶部导航、底部全局栏、详情页标签、过滤弹窗里的策略下拉。先认清入口,再看怎么配。</p>
+      <div class="site-search" style="margin-top:20px; max-width:360px;"><input type="text" id="site-search-input" placeholder="搜索文档…" autocomplete="off"></div>
+    </div>
+  </header>
+
+  <nav class="toc-nav">
+    <div class="wrap">
+      <a href="#zones">四个露头的地方</a>
+      <a href="#official-strategies">官方推荐的三大策略</a>
+      <a href="#import">导入官方策略</a>
+      <a href="#basic-settings">基本设置这一页</a>
+      <a href="#logic">策略逻辑:写判断代码</a>
+      <a href="#cases">实战案例</a>
+      <a href="#knowledge">知识点</a>
+    </div>
+  </nav>
+
+  <section id="zones">
+    <div class="wrap">
+      <h2>四个露头的地方</h2>
+      <p class="section-sub">同一套东西,在界面上有四个入口,别搞混。</p>
+
+      <div class="zones">
+        <div class="zone">
+          <div class="num">1</div>
+          <div>
+            <h4>顶部导航 · AI 策略引擎</h4>
+            <p>页面最上面一行的右侧,挨着 <code>API</code> 和 <code>VIP</code>。策略引擎的主入口。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">2</div>
+          <div>
+            <h4>底部全局栏 · AI策略</h4>
+            <p>和「自选 / 信号 / 热门 / 监控 / 仓位 / 战壕」同一行,最右边。在详情页里不用退出去就能开。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">3</div>
+          <div>
+            <h4>详情页标签 · 我的策略</h4>
+            <p>详情页下半部分的标签栏里,和交易明细、信号分析、DCA/Limit 分析、仓位、挂单、历史成交并列。括号里的数字是当前挂着几条。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">4</div>
+          <div>
+            <h4>过滤弹窗 · AI 策略下拉</h4>
+            <p>信号看板和战壕看板的「过滤条件设置」里都有一栏 <code>AI 策略</code>,默认是 <code>不限策略</code>。也就是说筛选的时候可以只看某条策略命中的币。配置方法见 <a href="signal-filter.html" style="color:var(--green); text-decoration:none;">六大信号自定义筛选 →</a></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shot-block" style="margin-top:40px;">
+        <div class="shot-num"><span class="dot">1</span>入口位置</div>
+        <div class="shot-frame pending">
+          截图待补充 · ai-engine-entry
+        </div>
+        <p class="shot-caption">顶部导航栏右侧的「AI 策略引擎」。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="official-strategies">
+    <div class="wrap">
+      <h2>官方推荐的三大策略</h2>
+      <p class="section-sub">引擎里预置了三条官方策略,都在运营中,带实盘数据。可以只当信号看,也可以直接开自动交易挂单。</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>1.5段策略 · 强势盘策略</div>
+        <div class="shot-frame">
+          <img src="shots/official-strategy-1.jpg" alt="official-strategy-1" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">每条策略一整块:左边是历史命中的柱状图,右边是收益和胜率分布,最右边是六层过滤的计数和运营开关。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>苏醒接力策略</div>
+        <div class="shot-frame">
+          <img src="shots/official-strategy-2.jpg" alt="official-strategy-2" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">这条勾了 <code>自动交易</code> —— 命中之后不用手动下单,直接挂。</p>
+      </div>
+
+      <div class="note">
+        <strong>苏醒接力策略建议用网格挂单。</strong>买入方式选 <code>网格挂单</code>,参考价选 <code>当前市值</code>,下跌区间填 <code>30%</code> ~ <code>100%</code>。这样命中后不会一次性市价买入,而是按市值下跌区间分批挂限价单,摊薄成本。
+      </div>
+
+      <div class="strategy-tabs">
+        <div class="tab-header" role="tablist">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="suxing-guadan">苏醒策略挂单建议</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="sandia-duibi">三大策略对比</button>
+        </div>
+        <div class="tab-panel active" id="tab-suxing-guadan" role="tabpanel">
+          <div class="shot-block">
+            <div class="shot-num"><span class="dot">1</span>苏醒策略挂单参数</div>
+            <div class="shot-frame">
+              <img src="shots/grid-order.jpg" alt="grid-order" loading="lazy" decoding="async">
+            </div>
+            <p class="shot-caption">网格挂单 + 当前市值 + 下跌区间 30% ~ 100%。</p>
+          </div>
+        </div>
+        <div class="tab-panel" id="tab-sandia-duibi" role="tabpanel">
+          <h3 class="sub">三条策略横着看</h3>
+      <div class="table-scroll keep">
+        <table class="compare-table">
+          <tr>
+            <th>指标</th>
+            <th>1.5段策略</th>
+            <th>强势盘策略</th>
+            <th>苏醒接力策略</th>
+          </tr>
+          <tr>
+            <td class="metric">已运行</td>
+            <td>28 天</td>
+            <td>1 月</td>
+            <td>1 月</td>
+          </tr>
+          <tr>
+            <td class="metric">勾选的信号</td>
+            <td><span class="filter-val">回调反弹</span></td>
+            <td><span class="filter-val">回调反弹</span> <span class="filter-val">早期精选</span></td>
+            <td><span class="filter-val">苏醒信号</span></td>
+          </tr>
+          <tr>
+            <td class="metric">最高收益</td>
+            <td class="hi">957%</td>
+            <td class="hi">2536%</td>
+            <td class="hi">694%</td>
+          </tr>
+          <tr>
+            <td class="metric">命中代币</td>
+            <td class="hi">32</td>
+            <td class="hi">120</td>
+            <td class="hi">4</td>
+          </tr>
+          <tr>
+            <td class="metric">胜率 &gt;30%</td>
+            <td>81%</td>
+            <td>76%</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td class="metric">胜率 &gt;100%</td>
+            <td>56%</td>
+            <td>44%</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td class="metric">胜率 &gt;300%</td>
+            <td>13%</td>
+            <td>20%</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td class="metric">胜率 &gt;500%</td>
+            <td>6%</td>
+            <td>12%</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td class="metric">最高一档</td>
+            <td>&gt;2000% · 0%</td>
+            <td>&gt;1000% · 5%</td>
+            <td>&gt;1000% · 0%</td>
+          </tr>
+          <tr>
+            <td class="metric">总触发</td>
+            <td>3.27K</td>
+            <td>10.38K</td>
+            <td>2.94K</td>
+          </tr>
+          <tr>
+            <td class="metric">Bot 通知</td>
+            <td>关</td>
+            <td>关</td>
+            <td>关</td>
+          </tr>
+          <tr>
+            <td class="metric">自动交易</td>
+            <td>关</td>
+            <td>关</td>
+            <td><span class="hi">开</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>命中代币数别单看绝对值。</strong>苏醒接力只命中 4 个,但 4 个全部涨过 100%,所以 &gt;30% 和 &gt;100% 两档都是 100%;强势盘命中 120 个,基数大,&gt;30% 摊薄到 76%。样本少的策略胜率好看是正常的,要放到一起看总触发和命中数。
+      </div>
+        </div>
+      </div>
+
+      <h3 class="sub">苏醒策略核心：1 分钟交易量持续性</h3>
+      <p class="section-sub">苏醒接力策略非常看重 <strong>1 分钟交易量是否连续</strong>。价格涨上来只是表象，下面成交量能不能持续跟上，才是判断该不该留、该不该跑的关键。</p>
+
+      <div class="note">
+        <strong>核心原则：</strong>如果价格上涨但交易量没跟上，直接跑；如果第一根爆量是天量、后续成交量却迅速萎缩，也很危险。只有 <strong>价格涨 + 交易量持续放大</strong>，才值得持有观察。
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>连续放量：价格涨，成交量持续跟上</div>
+        <div class="shot-frame">
+          <img src="shots/suxing-vol-continuous.jpg" alt="suxing-vol-continuous" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">红框处成交量比前面明显放大，且后续几根都维持高位，这种量价配合才算健康。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>危险信号：一根天量，后续跟不上</div>
+        <div class="shot-frame">
+          <img src="shots/suxing-vol-danger.jpg" alt="suxing-vol-danger" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">第一根爆量很大，但后面成交量迅速萎缩，价格容易失去支撑，这种走势不要恋战。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">3</span>健康走势：成交量始终跟上价格</div>
+        <div class="shot-frame">
+          <img src="shots/suxing-vol-follow.jpg" alt="suxing-vol-follow" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">价格上涨的每一波都有成交量配合，说明资金在持续进场，更符合苏醒策略的入场/持有条件。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">4</span>内盘主力占主导的盘：识别与回避</div>
+        <div class="shot-frame pending">
+          截图待补充 · neipan-zhuli
+        </div>
+        <p class="shot-caption">若盘面由内盘/主力主导,走势常表现为突然拉抬后快速出货。配合价格行为与成交量分布,警惕「加了推广出货」式的诱多。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">5</span>筹码峰：从分散派发到聚集</div>
+        <div class="shot-frame pending">
+          截图待补充 · chouma-concentration
+        </div>
+        <p class="shot-caption">图中圈2处,筹码峰由分散派发逐渐转为聚集,说明资金在重新聚拢,结合价格与成交量判断是否为新一轮承接信号。</p>
+      </div>
+
+      <h3 class="sub">一块策略卡上都有什么</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>位置</th>
+            <th>是什么</th>
+          </tr>
+          <tr>
+            <td class="name-col">标题行</td>
+            <td>策略名 + 已经跑了多久(<code>28天</code> / <code>1月</code>)。最左边的 ▶ 是折叠开关,右边一排是分组、导出、分享、编辑、删除。</td>
+          </tr>
+          <tr>
+            <td class="name-col">信号勾选行</td>
+            <td>六大信号 <span class="filter-val">蓝筹头部赢家共振</span> <span class="filter-val">回调反弹</span> <span class="filter-val">早期精选</span> <span class="filter-val">苏醒信号</span> <span class="filter-val">关注</span> <span class="filter-val">聪明钱</span>,打勾的就是这条策略吃哪几种信号。</td>
+          </tr>
+          <tr>
+            <td class="name-col">柱状图</td>
+            <td>按时间排的历史命中。绿柱是涨的,标了最大涨幅(<code>9.56x</code>、<code>85.78%</code>);底下的红色小方块是没跑起来的。横轴是距今多久(<code>5分钟</code> 到 <code>23小时</code>)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">最高收益 / 命中代币</td>
+            <td>这条策略跑到现在,单个代币最大的一次涨幅,以及一共命中了几个。</td>
+          </tr>
+          <tr>
+            <td class="name-col">胜率分布</td>
+            <td>命中的代币里,涨幅超过对应档位的各占多少。<strong>这五档是建策略时自己填的</strong>,默认 <code>30 / 100 / 300 / 500 / 1000</code>,1.5段策略把最后一档改成了 <code>2000</code>。所以跨策略比最后一档没意义,配置见<a href="#trade-params" style="color:var(--green); text-decoration:none;">交易参数 ↓</a></td>
+          </tr>
+          <tr>
+            <td class="name-col">六层过滤</td>
+            <td>总触发、信号过滤、指标过滤、维度过滤、持有者过滤、叙事过滤,各自一条计数条。数字等于总触发说明那层没卡掉东西,<code>0</code> 说明那层没设条件。</td>
+          </tr>
+          <tr>
+            <td class="name-col">Bot通知 / 自动交易</td>
+            <td>两个独立开关。只勾 Bot通知 就是当信号用,命中了推给你;勾了自动交易就是命中直接挂单。</td>
+          </tr>
+          <tr>
+            <td class="name-col">运营中(点击暂停)</td>
+            <td>策略的总开关。点一下停,停了就不再触发。</td>
+          </tr>
+          <tr>
+            <td class="name-col">底部代币卡片</td>
+            <td>最近命中的几个币,每张卡上是代币名、多久之前命中、走的哪条策略、市值区间(<code>$18.0k → $42.2k</code>)和最大涨幅。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note todo">六层过滤那栏的计数口径(是逐层筛剩下的量,还是每层各自的命中数)还要跟官方确认一次,确认后回来把这一行改准。</div>
+    </div>
+  </section>
+
+  <section id="import">
+    <div class="wrap">
+      <h2>导入官方策略</h2>
+      <p class="section-sub">不用一个参数一个参数手配。官方把三大策略导出成了文本,粘进来就能直接用。</p>
+
+      <div class="zones">
+        <div class="zone">
+          <div class="num">1</div>
+          <div>
+            <h4>拿到策略文本</h4>
+            <p>去 <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a> 打开 <code>import.txt</code>,把里面的内容整段复制。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">2</div>
+          <div>
+            <h4>点右上角「导入」</h4>
+            <p>在「我的策略」页面顶栏最右边,挨着 <code>+ 新增策略</code>。</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">3</div>
+          <div>
+            <h4>粘贴,点「导入」</h4>
+            <p>弹窗里只有一个输入框,提示写着「粘贴导出的策略文本」。粘进去点绿色的 <code>导入</code>,策略就出现在列表里了 —— <strong>所有参数一次性带过来,不用再手配</strong>。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shot-block" style="margin-top:40px;">
+        <div class="shot-num"><span class="dot">1</span>导入入口</div>
+        <div class="shot-frame">
+          <img src="shots/import-entry.jpg" alt="import-entry" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">顶栏右侧的 <code>导入</code>,红箭头指的位置。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>导入弹窗</div>
+        <div class="shot-frame narrow">
+          <img src="shots/import-dialog.jpg" alt="import-dialog" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">一个输入框加两个按钮,没别的选项。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">3</span>复制策略代码</div>
+        <div class="shot-frame">
+          <img src="shots/copy-code.jpg" alt="copy-code" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">去 <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a> 打开 <code>code.js</code>,把里面的内容整段复制到「策略逻辑」里。</p>
+      </div>
+
+      <div class="note">
+        <strong>导入是「导出」的反向操作。</strong>每条策略卡右上角都有个 <code>导出</code>,点了会生成一段文本 —— 那段文本就是这里要粘的东西。所以除了官方策略,社群里互相发的策略也是这么传的。
+      </div>
+
+      <h3 class="sub">顶栏上还有什么</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>位置</th>
+            <th>是什么</th>
+          </tr>
+          <tr>
+            <td class="name-col">我的策略(6/14)</td>
+            <td>括号是「开启中 / 总共建了几条」。旁边 <code>全部</code> <code>开启中</code> <code>已停止</code> 三个按钮按状态筛。</td>
+          </tr>
+          <tr>
+            <td class="name-col">所有策略日志</td>
+            <td>所有策略的触发记录汇总。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略模版(7)</td>
+            <td>官方给的现成模版,7 套。和导入是两条路 —— 模版是站内直接套,导入是粘文本。</td>
+          </tr>
+          <tr>
+            <td class="name-col">使用教程</td>
+            <td>官方文档入口。</td>
+          </tr>
+          <tr>
+            <td class="name-col">3H / 1D / 7D / 30D / 全部</td>
+            <td>右上角的时间范围。切了之后下面每条策略的柱状图和胜率分布跟着变 —— <strong>同一条策略在 1D 和 30D 下数字完全不一样</strong>,对比之前先确认档位一致。</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ 新增分组</td>
+            <td>策略多了之后分组用。默认只有一个 <code>全部</code>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ 新增策略</td>
+            <td>从零手配一条,流程见下一节。</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="basic-settings">
+    <div class="wrap">
+      <h2>基本设置这一页</h2>
+      <p class="section-sub">导入之后所有参数都已经带过来了,这页主要是拿来核对和微调的。真要动的一般只有生效时间段和买单金额。</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>上半页 · 触发方式</div>
+        <div class="shot-frame">
+          <img src="shots/ai-engine-panel.jpg" alt="ai-engine-panel" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">顶上四个标签 <code>基本设置</code> <code>策略逻辑</code> <code>实时日志</code> <code>清理</code>,右上角是 <code>保存策略</code> 和 <code>AI 生成代码</code>。改完必须点保存。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>下半页 · 交易和档位</div>
+        <div class="shot-frame">
+          <img src="shots/strategy-trade-config.jpg" alt="strategy-trade-config" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">从生效时间段往下:自动交易开关、下单方式、金额、钱包、止盈止损、胜率分布档位。</p>
+      </div>
+
+      <h3 class="sub">策略触发方式(三选一)</h3>
+      <p class="section-sub">这是整页最关键的一个选择,决定了这条策略能用哪些数据。</p>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>方式</th>
+            <th>怎么触发 / 能用什么数据</th>
+          </tr>
+          <tr>
+            <td class="name-col">信号触发</td>
+            <td>由平台已有的信号驱动,适合在信号的基础上再过滤一层。可用 <code>logearn</code> <code>holders</code> <code>kline indicator</code> <code>chip_analysis</code> 全部数据。三大官方策略走的都是这条。</td>
+          </tr>
+          <tr>
+            <td class="name-col">Token 实时流触发</td>
+            <td>覆盖全链 token 每秒的变化,适合「扫链」类策略(新代币 / 刚毕业 / 市值刚突破某个阈值)。<strong>只能用 <code>logearn</code> 和 <code>signals</code> 数据</strong>,拿不到持有者和筹码分析。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略触发</td>
+            <td>订阅一条或多条「代币实时流」策略产生的命中代币池,再用更丰富的数据对池子里的币反复检查。可用全部数据 —— 相当于用实时流先粗筛出池子,再拿这条精筛。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">上半页参数</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">适用链</td>
+            <td><code>All</code> / Solana / BNB。图里选的是 Solana。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略名称</td>
+            <td>默认 <code>新策略-v1</code>。导入官方策略会带原名过来,自己改了参数建议在名字上留个版本号,不然列表里几条长得一样分不清。</td>
+          </tr>
+          <tr>
+            <td class="name-col">信号勾选</td>
+            <td>选了「信号触发」之后才出现,六大信号勾哪几个。图里是 <span class="filter-val">回调反弹</span> + <span class="filter-val">早期精选</span>,也就是强势盘策略那套。</td>
+          </tr>
+          <tr>
+            <td class="name-col">允许同一代币反复命中</td>
+            <td>关掉之后,同一代币命中一次就不再重复检查(命中即终结)。只对普通信号(蓝筹共振 / 反弹 / 放量 / 休眠)生效;<strong>关注和聪明钱本身就会反复买卖,恒定去重,不受这个开关影响</strong>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">生效时间段</td>
+            <td>策略每天生效的时间段,本地时区,可以配多个。当前时间不在任何时段内时策略暂停 —— 不命中也不交易。不设就是全天生效。跨夜时段(如 <code>22:00-02:00</code>)会自动识别,不用拆成两段。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub" id="trade-params">交易参数</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">启用自动交易</td>
+            <td>命中时自动买入。<strong>不勾就只产生策略信号,不下单。</strong>想先观察一段时间的,把这个关掉。</td>
+          </tr>
+          <tr>
+            <td class="name-col">允许同时持有多笔仓位</td>
+            <td>不勾时:不管你同时开了多少条策略,同一个代币只会买一次,除非这个币的仓位卖掉了,再来信号才会重新买。勾上就跳过这道检查,允许对同一个币反复加仓。</td>
+          </tr>
+          <tr>
+            <td class="name-col">只买首次命中</td>
+            <td><strong>勾上</strong>:这个币只买一次,卖出之后即使本策略再次命中也不再买入。<strong>不勾</strong>:只看当前有没有持仓 —— 有持仓就不买,没持仓又来信号就再买一次。</td>
+          </tr>
+          <tr>
+            <td class="name-col">买入下单方式</td>
+            <td><code>市价买入</code>:命中即刻按市价买。<code>网格挂单</code>:不立即买,改成分批挂限价单,配置见下面一节。<strong>切到网格挂单之后,上面的「买单金额」就不用了</strong>,金额改由网格模板决定。</td>
+          </tr>
+          <tr>
+            <td class="name-col">买单金额</td>
+            <td>市价买入时每次买多少,后面选计价币种:USDC / USD1 / USDT / SOL。图里是 <code>10 SOL</code>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">交易钱包</td>
+            <td>下单用哪个钱包,右边显示余额。<strong>导入别人的策略之后这里一定要核一遍</strong> —— 钱包和金额是跟着你自己的账号走的。</td>
+          </tr>
+          <tr>
+            <td class="name-col">止盈止损</td>
+            <td>勾上之后从下拉里选一套止盈止损规则(图里是「1.5段策略止盈止损」),旁边齿轮进去改具体数值。</td>
+          </tr>
+          <tr>
+            <td class="name-col">胜率分布档位</td>
+            <td>自定义策略卡上那五个涨幅档位(单位 %),统计命中代币里有多少比例达到了对应涨幅。留空的档位会被忽略,全部留空就用默认的 <code>30 / 100 / 300 / 500 / 1000</code>。旁边有个 <code>恢复默认</code>。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">网格挂单</h3>
+      <p class="section-sub">把「买入下单方式」切到 <code>网格挂单</code>,下面会多出一块设置,同时上面的「买单金额」换成「交易币种」。</p>
+
+      <div class="shot-block">
+        <div class="shot-frame">
+          <img src="shots/grid-order.jpg" alt="grid-order" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">网格挂单展开后的样子。上面红字标的是「只买首次命中」不勾时的行为 —— 持仓不买入,不持仓有信号就买入。</p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">怎么下单</td>
+            <td>命中时不立即市价买入,而是以参考价为基准、在下跌区间内按模板<strong>分批挂限价买单</strong>。卖出仍然走上面配的止盈止损。</td>
+          </tr>
+          <tr>
+            <td class="name-col">交易币种</td>
+            <td>USDC / USD1 / USDT / SOL。模板里配的金额(USD 或原生币)会按当前汇率换算成这个币种再下单。</td>
+          </tr>
+          <tr>
+            <td class="name-col">参考价</td>
+            <td><code>当前市值</code> 或 <code>最高市值</code>。下跌区间是相对这个价算的 —— 选最高市值意味着从历史高点往下挂,同样的区间挂得更低。</td>
+          </tr>
+          <tr>
+            <td class="name-col">下跌区间</td>
+            <td>两个百分比,图里是 <code>-0%</code> 到 <code>-50%</code>,也就是从参考价往下五折这段区间里铺格子。</td>
+          </tr>
+          <tr>
+            <td class="name-col">网格模板</td>
+            <td>决定每笔买多少、铺几格,图里是 <code>买$10平分网格挂单(5 格)</code>。<strong>每笔买入金额来自模板,不是上面的「买单金额」</strong> —— 点旁边齿轮改模板金额。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>网格挂单和市价买入的取舍。</strong>市价买入是信号一来就吃进,速度优先;网格挂单是等回调分批接,成本优先,但代价是币直接拉走的话一格都成交不了。回调反弹这类信号本来就是买回调的,配网格更顺;早期精选这种要抢速度的,挂网格容易空手。
+      </div>
+
+      <div class="note warn">
+        <strong>导入之后先看两处。</strong>一是<strong>生效时间段</strong> —— 别人导出的策略可能跑在他的作息上,你要按自己的时区和盯盘时间重设。二是<strong>交易钱包和买单金额</strong> —— 这两个跟你自己的账号绑定,不核对就开自动交易等于拿默认值下单。
+      </div>
+
+      <div class="note todo">还缺:<code>AI 生成代码</code> 具体怎么用、止盈止损规则齿轮点进去的配置项。有截图了补进来。</div>
+    </div>
+  </section>
+
+  <section id="logic">
+    <div class="wrap">
+      <h2>策略逻辑:写判断代码</h2>
+      <p class="section-sub">基本设置管的是「什么时候触发、命中了怎么下单」,策略逻辑管的是「命中之后到底要不要它」。这里是一段 JavaScript,平台把数据塞进 <code>ctx</code>,你写代码决定放行还是排除。</p>
+
+      <div class="note warn">
+        <strong>贴代码是整段全部替换,不是追加。</strong>编辑器里始终只有一份脚本。拿到新代码就把里面原有的内容<strong>全选删掉再粘</strong> —— 追加在后面会变成两段逻辑叠在一起,轻则重复判断,重则直接报错。改完记得点右上角 <code>保存策略</code>。
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-frame">
+          <img src="shots/strategy-logic.jpg" alt="strategy-logic" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">策略逻辑标签页。顶上那排是这条策略最近命中的币,下面就是代码编辑器。</p>
+      </div>
+
+      <h3 class="sub">代码里的基本套路</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>写法</th>
+            <th>作用</th>
+          </tr>
+          <tr>
+            <td class="name-col">return false</td>
+            <td><strong>排除这个代币</strong>,不命中。图里那几段「一票否决」都是查到问题就直接 return false。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.log.error(...)</td>
+            <td>写一条日志,在 <code>实时日志</code> 标签里看。排除的时候顺手把原因和实际数值打出来,不然上线之后不知道为什么没命中。</td>
+          </tr>
+          <tr>
+            <td class="name-col">|| {} 和 Array.isArray(...)</td>
+            <td>取数据前先兜底。某些数据源在特定触发方式下拿不到(见下表),不兜底会直接抛错。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">ctx 上挂着什么</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>数据源</th>
+            <th>里面有什么</th>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.chip_analysis</td>
+            <td>筹码分析。图里用到 <code>above_percent</code>、<code>below_percent</code>、<code>top5_holders</code>(前五大持有者数组)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.holders</td>
+            <td>持有者列表,是个数组,可以 <code>slice(0, 30)</code> 取 Top30。每项上有 <code>address</code>、<code>total_hold_percent</code>(持仓占比)、<code>transfer_in_percent</code>(转入占比)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.logearn</td>
+            <td>LogEarn 自己的数据,图里用到 <code>token_address</code>、<code>mcap</code>(当前市值)、<code>max_up_mcap</code>(历史最高市值)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.kline_and_indicators</td>
+            <td>K 线和技术指标。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.gmgn</td>
+            <td>GMGN 的数据。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>能拿到哪些数据取决于触发方式。</strong>信号触发和策略触发能用全部;<strong>Token 实时流只有 <code>logearn</code> 和 <code>signals</code></strong> —— 在实时流策略里写 <code>ctx.holders</code> 或 <code>ctx.chip_analysis</code> 是拿不到东西的,所以那几行 <code>|| {}</code> 的兜底不能省。
+      </div>
+
+      <h3 class="sub">图里那段代码在做什么</h3>
+      <p class="section-sub">官方这段是典型的「一票否决」写法 —— 一层层查,查到雷就排除,全过了才算命中。</p>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>检查</th>
+            <th>逻辑</th>
+          </tr>
+          <tr>
+            <td class="name-col">黑名单地址</td>
+            <td>Top30 持有者里出现黑名单地址,直接排除。</td>
+          </tr>
+          <tr>
+            <td class="name-col">单钱包持仓过高</td>
+            <td>筹码 Top5 里只要有一个钱包持仓占比 <code>&gt; 10%</code> 就排除 —— 防大户砸盘。</td>
+          </tr>
+          <tr>
+            <td class="name-col">头部筹码来源</td>
+            <td>Top5 里任一地址<strong>转入</strong>占比 <code>&gt; 5%</code> 就排除。要求头部地址的筹码主要靠买入建仓,转入占比高说明是分发或老鼠仓。</td>
+          </tr>
+          <tr>
+            <td class="name-col">跌破斐波 0.86</td>
+            <td>最低点固定为 0、最高点取历史最高市值 <code>max_up_mcap</code>,0.86 回撤位 = <code>max_up_mcap × 0.14</code>。当前市值跌破这条线就拉黑。<strong>只看当前市值</strong>,不遍历 K 线历史,所以不会因为「历史曾跌破」而误杀。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note warn">
+        <strong>代码注释里自带的一个坑。</strong>官方在跌破拉黑那段标了个 ⚠️:<code>add_blacklist</code> 在纯「代币实时流」模式下是<strong>空操作</strong> —— 代码照跑不报错,但黑名单实际没写进去。用实时流触发的话,上线后要去实时日志里确认一遍到底有没有生效。
+      </div>
+    </div>
+  </section>
+
+  <section id="cases">
+    <div class="wrap">
+      <h2>实战案例</h2>
+      <p class="section-sub">策略命中的真实案例复盘,陆续补充。历史案例,不构成投资建议。</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span><a href="https://logearn.com/cn/solana/tokens/9sfCHMLWSVy6MD6zr7pR1gD3qbT7C6K1E3dMf2ZBpump?referral=15038660" target="_blank" style="color:inherit; text-decoration:none; border-bottom:1px dashed var(--green-dim);">苏醒策略命中 · LAYOOO</a></div>
+        <div class="shot-frame narrow">
+          <img src="shots/case-layooo.jpg" alt="case-layooo" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">流程:苏醒策略捕捉异动 → 查看 X 发现社区刚启动 CTO → 不追第一波、等待回踩承接 → 结合信号与事件人为判断入场。策略记录约 <strong>10.24x</strong>。</p>
+        <div class="note">
+          <strong>点评:</strong>这个案例特别符合苏醒策略「死了再复活」的核心判断点 —— 先看<strong>死得够久</strong>(长时间无量横盘/沉寂),再等<strong>苏醒时的 CTO 动作</strong>(社区接管、重新运营)作为确认信号。两个条件叠加,比单纯看到放量就冲更可靠。
+        </div>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span><a href="https://logearn.com/cn/bsc/tokens/0x964ad8b6ab3261b6134b2c1440a9712a3d457777" target="_blank" style="color:inherit; text-decoration:none; border-bottom:1px dashed var(--green-dim);">苏醒策略命中 · CZ26</a></div>
+        <div class="shot-frame">
+          <img src="shots/case-cz26.jpg" alt="case-cz26" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">流程:长时间无量死气沉沉 → 推特大 V(粉丝量级)发「法拉利 CZ26 定制跑车」梗图 @cz_binance,评论区一堆人赌 CZ 会不会复出 → 苏醒策略同一时间捕捉到异动,标记两次苏醒信号 → 叠加大 V 话题热度确认后拉升。</p>
+        <div class="note">
+          <strong>点评:</strong>跟第一个案例是同一套逻辑 —— <strong>死得够久</strong>是前提,<strong>苏醒时有外部事件/话题接力</strong>(这次不是 CTO,是推特大 V 造梗带流量,赌 CZ 复出)是确认信号。事件类型可以不同,但「先沉寂、再被重新炒起来」这个结构是一致的,策略先命中,事件再验证。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="knowledge">
+    <div class="wrap">
+      <h2>知识点</h2>
+      <p class="section-sub">配合策略引擎一起看的专题讲解,陆续补充。</p>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>反弹信号详解</h4>
+          <p>拆解「反弹」这类信号是怎么判定的、背后看的是哪些数据,以及在策略引擎里怎么配合使用。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/677" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>官方策略最佳时间使用教材</h4>
+          <p>讲解官方策略在不同时间窗口下的使用方式与注意事项,配合策略引擎配置一起看。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/666" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>拿到官方策略库后如何更新策略</h4>
+          <p>从 GitHub 拿到官方策略库后,怎么在策略引擎里同步/更新策略,避免手动改参数。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/665" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>AI 策略发布会</h4>
+          <p>官方策略发布会回放,介绍策略引擎的设计理念、三条官方策略的由来与适用场景。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/647" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>使用文档</h4>
+          <p>策略引擎完整使用文档视频版,覆盖入口、配置、导入、运行和常见问题。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/639" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>1.5 段战法策略分享</h4>
+          <p>1.5 段战法的实战策略分享,包括参数思路、入场条件与止损止盈逻辑。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/636" target="_blank">▶ 观看视频(Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>二段策略实操文档</h4>
+          <p>PDF 版实操文档,包含二段策略的参数设置、案例说明与注意事项。</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/635" target="_blank">▶ 查看文档(Telegram)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap"><a href="index.html">← 返回 LogEarn 知识库</a> · 产品使用说明</div>
+  </footer>
+
+  <script>
+    (function(){
+      var links = Array.prototype.slice.call(document.querySelectorAll('.toc-nav a'));
+      var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+      function onScroll(){
+        var pos = window.scrollY + 80;
+        var current = sections[0];
+        sections.forEach(function(sec){
+          if(sec && sec.offsetTop <= pos) current = sec;
+        });
+        links.forEach(function(a){
+          a.classList.toggle('active', sections[links.indexOf(a)] === current);
+        });
+      }
+      document.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      var tabGroups = Array.prototype.slice.call(document.querySelectorAll('.strategy-tabs'));
+      tabGroups.forEach(function(group){
+        var buttons = Array.prototype.slice.call(group.querySelectorAll('.tab-btn'));
+        var panels = Array.prototype.slice.call(group.querySelectorAll('.tab-panel'));
+        buttons.forEach(function(btn){
+          btn.addEventListener('click', function(){
+            var target = btn.getAttribute('data-tab');
+            buttons.forEach(function(b){
+              var active = b.getAttribute('data-tab') === target;
+              b.classList.toggle('active', active);
+              b.setAttribute('aria-selected', active ? 'true' : 'false');
+            });
+            panels.forEach(function(p){
+              p.classList.toggle('active', p.id === 'tab-' + target);
+            });
+          });
+        });
+      });
+    })();
+  </script>
+  <script src="site.js"></script>
+  <script src="search.js"></script>
+</body>
+</html>

@@ -5,8 +5,6 @@ from html import unescape
 from pathlib import Path
 
 ROOT=Path(__file__).parent
-PAGES=['index.html','faq.html','detail-page.html','signal-filter.html','ai-strategy.html','recap.html']
-
 def clean(s):
     s=re.sub(r'<(script|style)[^>]*>.*?</\1>',' ',s,flags=re.S|re.I)
     s=re.sub(r'<[^>]+>',' ',s)
@@ -14,8 +12,9 @@ def clean(s):
 
 def build(folder):
     out=[]
-    for name in PAGES:
-        path=folder/name
+    paths=sorted(folder.glob('*.html'))+sorted((folder/'ai').glob('*.html'))
+    for path in paths:
+        name=path.relative_to(folder).as_posix()
         html=path.read_text(encoding='utf-8')
         title=clean(re.search(r'<title>(.*?)</title>',html,re.S|re.I).group(1)).split('—')[0].strip()
         sections=list(re.finditer(r'<h([12])(?:\s+[^>]*)?(?:id="([^"]+)")?[^>]*>(.*?)</h\1>',html,re.S|re.I))
@@ -31,4 +30,3 @@ def build(folder):
 for lang,folder in [('zh',ROOT),('en',ROOT/'en')]:
     (ROOT/f'search-index.{lang}.json').write_text(json.dumps(build(folder),ensure_ascii=False,separators=(',',':')),encoding='utf-8')
     print(f'built search-index.{lang}.json')
-

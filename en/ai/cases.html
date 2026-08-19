@@ -1,0 +1,100 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Trading Cases and Further Reading — LogEarn</title><meta name="description" content="Review real cases and continue with related learning."><link rel="icon" href="../../shots/logo.png"><link rel="stylesheet" href="../../ai-article.css"><link rel="stylesheet" href="../../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../../" data-kb-page="ai-strategy.html" data-kb-alt="../../ai/cases.html"><header class="guide-intro"><div class="eyebrow">AI Strategy Guide</div><h1>Trading Cases and Further Reading</h1><p>Review real cases and continue with related learning.</p></header><nav class="guide-local" aria-label="AI strategy guides"><a class="guide-link" href="quick-start.html">Quick Start</a><a class="guide-link" href="strategies.html">Choosing an Official Strategy</a><a class="guide-link" href="import.html">Importing and Updating</a><a class="guide-link" href="settings.html">Settings and Trading Parameters</a><a class="guide-link" href="logic.html">Strategy Logic and ctx</a><a class="guide-link" href="cases.html" aria-current="page">Trading Cases and Further Reading</a></nav><main><section id="cases">
+    <div class="wrap">
+      <h2>Real Trading Cases</h2>
+      <p class="section-sub">Real cases where the strategy fired, reviewed after the fact. More to be added over time. Historical cases — not investment advice.</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span><a href="https://logearn.com/cn/solana/tokens/9sfCHMLWSVy6MD6zr7pR1gD3qbT7C6K1E3dMf2ZBpump?referral=15038660" target="_blank" style="color:inherit; text-decoration:none; border-bottom:1px dashed var(--green-dim);">Wake-up Strategy Hit · LAYOOO</a></div>
+        <div class="shot-frame narrow">
+          <img src="../../shots/case-layooo.jpg" alt="case-layooo" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Flow: Wake-up strategy catches the anomaly → checking X shows the community just kicked off a CTO → don't chase the first wave, wait for a pullback to get filled → combine the signal with the event for a manual entry decision. Strategy logged roughly <strong>10.24x</strong>.</p>
+        <div class="note">
+          <strong>Take:</strong> this case is a clean fit for the Wake-up Strategy's core judgment call — "dead, then revived." First check that it's been <strong>dead long enough</strong> (a long stretch of low-volume, dormant sideways action), then wait for a <strong>CTO move at the moment of revival</strong> (community takeover, restarted operations) as the confirming signal. Stacking both conditions is more reliable than jumping in on volume alone.
+        </div>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span><a href="https://logearn.com/cn/bsc/tokens/0x964ad8b6ab3261b6134b2c1440a9712a3d457777" target="_blank" style="color:inherit; text-decoration:none; border-bottom:1px dashed var(--green-dim);">Wake-up Strategy Hit · CZ26</a></div>
+        <div class="shot-frame">
+          <img src="../../shots/case-cz26.jpg" alt="case-cz26" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Flow: long stretch of dead, no-volume silence → a Twitter influencer posts a meme about a "Ferrari CZ26 custom supercar" tagging @cz_binance, with the replies full of people betting on whether CZ is making a comeback → the Wake-up strategy catches the anomaly at the same time, flagging two wake-up signals → the rally confirms once the influencer's topic gains traction.</p>
+        <div class="note">
+          <strong>Take:</strong> same underlying logic as case 1 — <strong>dead long enough</strong> is the precondition, and <strong>an external event/topic picking it back up at the moment of revival</strong> (this time not a CTO, but a Twitter influencer meme driving attention and CZ-comeback bets) is the confirming signal. The event type can vary, but the structure — "dormant first, then re-hyped" — stays the same. The strategy fires first, the event confirms it afterward.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="knowledge">
+    <div class="wrap">
+      <h2>Related Reading</h2>
+      <p class="section-sub">Topic deep-dives to go along with the strategy engine — more will be added over time.</p>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>Rebound Signal Explained</h4>
+          <p>Breaks down how "rebound"-type signals are determined, what data they're based on, and how to use them together with the strategy engine.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/677" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>Best Times to Use the Official Strategies</h4>
+          <p>Explains how to use the official strategies across different time windows and what to watch out for, alongside the strategy engine configuration.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/666" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>Updating Strategies After Getting the Official Strategy Repo</h4>
+          <p>How to sync/update strategies in the strategy engine after getting the official strategy repo from GitHub, avoiding manual parameter changes.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/665" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>AI Strategy Launch Event</h4>
+          <p>Replay of the official strategy launch event, covering the design philosophy of the strategy engine and the background and use cases of the three official strategies.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/647" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>User Guide</h4>
+          <p>A video version of the complete strategy engine user guide, covering entry points, configuration, importing, running, and common issues.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/639" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>1.5-Stage Trading Method Strategy Sharing</h4>
+          <p>A real-world strategy walkthrough of the 1.5-stage trading method, covering parameter thinking, entry conditions, and stop-loss/take-profit logic.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/636" target="_blank">▶ Watch Video (Telegram)</a>
+        </div>
+      </div>
+
+      <div class="video-card">
+        <div class="play">▶</div>
+        <div>
+          <h4>Stage-2 Strategy Hands-On Guide</h4>
+          <p>A PDF hands-on guide covering the Stage-2 Strategy's parameter settings, case studies, and things to watch out for.</p>
+          <a class="watch-link" href="https://t.me/LogearnAcademy/635" target="_blank">▶ View Document (Telegram)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main><script src="../../site.js"></script><script src="../../search.js"></script></body></html>

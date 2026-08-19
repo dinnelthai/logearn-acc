@@ -3,7 +3,9 @@
   var input=document.getElementById('site-search-input');
   if(!input)return;
   var isEn=location.pathname.indexOf('/en/')!==-1;
-  var prefix=isEn?'../':'';
+  var prefix=document.body.getAttribute('data-kb-root');
+  if(prefix===null)prefix=isEn?'../':'';
+  var resultPrefix=location.pathname.indexOf('/ai/')!==-1?'../':'';
   var data=[];
   var box=document.createElement('div');box.className='site-search-results';input.parentNode.appendChild(box);
   var style=document.createElement('style');style.textContent='.site-search{position:relative;max-width:520px}.site-search input{width:100%;box-sizing:border-box;background:var(--bg-card,#121512);border:1px solid var(--line,#24302a);border-radius:10px;color:var(--text,#e9efe9);font-size:14px;padding:11px 14px;outline:none}.site-search-results{position:absolute;left:0;right:0;top:calc(100% + 6px);z-index:30;background:var(--bg-card,#121512);border:1px solid var(--line,#24302a);border-radius:10px;overflow:auto;box-shadow:0 12px 28px rgba(0,0,0,.35);display:none;max-height:420px}.site-search-results a{display:block;padding:10px 14px;text-decoration:none;border-bottom:1px solid var(--line,#24302a);color:var(--text,#e9efe9)}.site-search-results a:hover,.site-search-results a.active{background:var(--bg-card-2,#171b17)}.site-search-results small{display:block;color:var(--text-faint,#718075);margin-top:2px}.site-search-empty{padding:14px;color:var(--text-faint,#718075)} mark{background:rgba(61,220,132,.22);color:inherit}';document.head.appendChild(style);
@@ -11,7 +13,7 @@
   function terms(q){return q.toLowerCase().trim().split(/\s+/).filter(Boolean)}
   function results(q){var ts=terms(q);if(!ts.length)return[];return data.map(function(x){var hay=(x.title+' '+x.heading+' '+x.text).toLowerCase(),score=0;ts.forEach(function(t){if(x.title.toLowerCase().indexOf(t)>=0)score+=8;if(x.heading.toLowerCase().indexOf(t)>=0)score+=5;if(hay.indexOf(t)>=0)score+=1});return{x:x,score:score}}).filter(function(r){return r.score>=ts.length}).sort(function(a,b){return b.score-a.score}).slice(0,10)}
   function snippet(text,q){var t=terms(q)[0],lower=text.toLowerCase(),at=lower.indexOf(t),start=Math.max(0,at-45),s=text.slice(start,start+130);if(start)s='…'+s;terms(q).forEach(function(k){s=s.replace(new RegExp('('+k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'),'<mark>$1</mark>')});return s}
-  function render(){var q=input.value.trim(),rs=results(q);if(!q){box.style.display='none';return}if(!rs.length){box.innerHTML='<div class="site-search-empty">'+(isEn?'No matching content. Try another keyword.':'没有匹配内容，换个关键词试试。')+'</div>'}else{box.innerHTML=rs.map(function(r){var x=r.x;return'<a href="'+(isEn?'':prefix)+esc(x.url)+'"><strong>'+esc(x.heading)+'</strong><small>'+esc(x.title)+' · '+snippet(esc(x.text),q)+'</small></a>'}).join('')}box.style.display='block'}
+  function render(){var q=input.value.trim(),rs=results(q);if(!q){box.style.display='none';return}if(!rs.length){box.innerHTML='<div class="site-search-empty">'+(isEn?'No matching content. Try another keyword.':'没有匹配内容，换个关键词试试。')+'</div>'}else{box.innerHTML=rs.map(function(r){var x=r.x;return'<a href="'+resultPrefix+esc(x.url)+'"><strong>'+esc(x.heading)+'</strong><small>'+esc(x.title)+' · '+snippet(esc(x.text),q)+'</small></a>'}).join('')}box.style.display='block'}
   fetch(prefix+'search-index.'+(isEn?'en':'zh')+'.json').then(function(r){return r.json()}).then(function(x){data=x}).catch(function(){box.innerHTML='<div class="site-search-empty">'+(isEn?'Search requires the site server.':'搜索需要通过站点服务器访问。')+'</div>'});
   input.addEventListener('input',render);input.addEventListener('focus',render);input.addEventListener('keydown',function(e){if(e.key==='Enter'){var a=box.querySelector('a');if(a)location.href=a.href}if(e.key==='Escape')box.style.display='none'});document.addEventListener('click',function(e){if(!input.parentNode.contains(e.target))box.style.display='none'});
 })();

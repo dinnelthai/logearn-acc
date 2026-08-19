@@ -1,0 +1,106 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>策略逻辑与 ctx — LogEarn</title><meta name="description" content="理解判断代码、ctx 数据和一票否决规则。"><link rel="icon" href="../shots/logo.png"><link rel="stylesheet" href="../ai-article.css"><link rel="stylesheet" href="../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../" data-kb-page="ai-strategy.html" data-kb-alt="../en/ai/logic.html"><header class="guide-intro"><div class="eyebrow">AI 策略专题</div><h1>策略逻辑与 ctx</h1><p>理解判断代码、ctx 数据和一票否决规则。</p></header><nav class="guide-local" aria-label="AI 策略专题"><a class="guide-link" href="quick-start.html">快速开始</a><a class="guide-link" href="strategies.html">官方策略怎么选</a><a class="guide-link" href="import.html">导入与更新策略</a><a class="guide-link" href="settings.html">基本设置与交易参数</a><a class="guide-link" href="logic.html" aria-current="page">策略逻辑与 ctx</a><a class="guide-link" href="cases.html">实战案例与延伸阅读</a></nav><main><section id="logic">
+    <div class="wrap">
+      <h2>策略逻辑:写判断代码</h2>
+      <p class="section-sub">基本设置管的是「什么时候触发、命中了怎么下单」,策略逻辑管的是「命中之后到底要不要它」。这里是一段 JavaScript,平台把数据塞进 <code>ctx</code>,你写代码决定放行还是排除。</p>
+
+      <div class="note warn">
+        <strong>贴代码是整段全部替换,不是追加。</strong>编辑器里始终只有一份脚本。拿到新代码就把里面原有的内容<strong>全选删掉再粘</strong> —— 追加在后面会变成两段逻辑叠在一起,轻则重复判断,重则直接报错。改完记得点右上角 <code>保存策略</code>。
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-frame">
+          <img src="../shots/strategy-logic.jpg" alt="strategy-logic" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">策略逻辑标签页。顶上那排是这条策略最近命中的币,下面就是代码编辑器。</p>
+      </div>
+
+      <h3 class="sub">代码里的基本套路</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>写法</th>
+            <th>作用</th>
+          </tr>
+          <tr>
+            <td class="name-col">return false</td>
+            <td><strong>排除这个代币</strong>,不命中。图里那几段「一票否决」都是查到问题就直接 return false。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.log.error(...)</td>
+            <td>写一条日志,在 <code>实时日志</code> 标签里看。排除的时候顺手把原因和实际数值打出来,不然上线之后不知道为什么没命中。</td>
+          </tr>
+          <tr>
+            <td class="name-col">|| {} 和 Array.isArray(...)</td>
+            <td>取数据前先兜底。某些数据源在特定触发方式下拿不到(见下表),不兜底会直接抛错。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">ctx 上挂着什么</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>数据源</th>
+            <th>里面有什么</th>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.chip_analysis</td>
+            <td>筹码分析。图里用到 <code>above_percent</code>、<code>below_percent</code>、<code>top5_holders</code>(前五大持有者数组)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.holders</td>
+            <td>持有者列表,是个数组,可以 <code>slice(0, 30)</code> 取 Top30。每项上有 <code>address</code>、<code>total_hold_percent</code>(持仓占比)、<code>transfer_in_percent</code>(转入占比)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.logearn</td>
+            <td>LogEarn 自己的数据,图里用到 <code>token_address</code>、<code>mcap</code>(当前市值)、<code>max_up_mcap</code>(历史最高市值)。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.kline_and_indicators</td>
+            <td>K 线和技术指标。</td>
+          </tr>
+          <tr>
+            <td class="name-col">ctx.gmgn</td>
+            <td>GMGN 的数据。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>能拿到哪些数据取决于触发方式。</strong>信号触发和策略触发能用全部;<strong>Token 实时流只有 <code>logearn</code> 和 <code>signals</code></strong> —— 在实时流策略里写 <code>ctx.holders</code> 或 <code>ctx.chip_analysis</code> 是拿不到东西的,所以那几行 <code>|| {}</code> 的兜底不能省。
+      </div>
+
+      <h3 class="sub">图里那段代码在做什么</h3>
+      <p class="section-sub">官方这段是典型的「一票否决」写法 —— 一层层查,查到雷就排除,全过了才算命中。</p>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>检查</th>
+            <th>逻辑</th>
+          </tr>
+          <tr>
+            <td class="name-col">黑名单地址</td>
+            <td>Top30 持有者里出现黑名单地址,直接排除。</td>
+          </tr>
+          <tr>
+            <td class="name-col">单钱包持仓过高</td>
+            <td>筹码 Top5 里只要有一个钱包持仓占比 <code>&gt; 10%</code> 就排除 —— 防大户砸盘。</td>
+          </tr>
+          <tr>
+            <td class="name-col">头部筹码来源</td>
+            <td>Top5 里任一地址<strong>转入</strong>占比 <code>&gt; 5%</code> 就排除。要求头部地址的筹码主要靠买入建仓,转入占比高说明是分发或老鼠仓。</td>
+          </tr>
+          <tr>
+            <td class="name-col">跌破斐波 0.86</td>
+            <td>最低点固定为 0、最高点取历史最高市值 <code>max_up_mcap</code>,0.86 回撤位 = <code>max_up_mcap × 0.14</code>。当前市值跌破这条线就拉黑。<strong>只看当前市值</strong>,不遍历 K 线历史,所以不会因为「历史曾跌破」而误杀。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note warn">
+        <strong>代码注释里自带的一个坑。</strong>官方在跌破拉黑那段标了个 ⚠️:<code>add_blacklist</code> 在纯「代币实时流」模式下是<strong>空操作</strong> —— 代码照跑不报错,但黑名单实际没写进去。用实时流触发的话,上线后要去实时日志里确认一遍到底有没有生效。
+      </div>
+    </div>
+  </section>
+
+  </main><script src="../site.js"></script><script src="../search.js"></script></body></html>

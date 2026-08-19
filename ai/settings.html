@@ -1,0 +1,168 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>基本设置与交易参数 — LogEarn</title><meta name="description" content="配置触发方式、交易参数和网格挂单。"><link rel="icon" href="../shots/logo.png"><link rel="stylesheet" href="../ai-article.css"><link rel="stylesheet" href="../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../" data-kb-page="ai-strategy.html" data-kb-alt="../en/ai/settings.html"><header class="guide-intro"><div class="eyebrow">AI 策略专题</div><h1>基本设置与交易参数</h1><p>配置触发方式、交易参数和网格挂单。</p></header><nav class="guide-local" aria-label="AI 策略专题"><a class="guide-link" href="quick-start.html">快速开始</a><a class="guide-link" href="strategies.html">官方策略怎么选</a><a class="guide-link" href="import.html">导入与更新策略</a><a class="guide-link" href="settings.html" aria-current="page">基本设置与交易参数</a><a class="guide-link" href="logic.html">策略逻辑与 ctx</a><a class="guide-link" href="cases.html">实战案例与延伸阅读</a></nav><main><section id="basic-settings">
+    <div class="wrap">
+      <h2>基本设置这一页</h2>
+      <p class="section-sub">导入之后所有参数都已经带过来了,这页主要是拿来核对和微调的。真要动的一般只有生效时间段和买单金额。</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>上半页 · 触发方式</div>
+        <div class="shot-frame">
+          <img src="../shots/ai-engine-panel.jpg" alt="ai-engine-panel" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">顶上四个标签 <code>基本设置</code> <code>策略逻辑</code> <code>实时日志</code> <code>清理</code>,右上角是 <code>保存策略</code> 和 <code>AI 生成代码</code>。改完必须点保存。</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>下半页 · 交易和档位</div>
+        <div class="shot-frame">
+          <img src="../shots/strategy-trade-config.jpg" alt="strategy-trade-config" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">从生效时间段往下:自动交易开关、下单方式、金额、钱包、止盈止损、胜率分布档位。</p>
+      </div>
+
+      <h3 class="sub">策略触发方式(三选一)</h3>
+      <p class="section-sub">这是整页最关键的一个选择,决定了这条策略能用哪些数据。</p>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>方式</th>
+            <th>怎么触发 / 能用什么数据</th>
+          </tr>
+          <tr>
+            <td class="name-col">信号触发</td>
+            <td>由平台已有的信号驱动,适合在信号的基础上再过滤一层。可用 <code>logearn</code> <code>holders</code> <code>kline indicator</code> <code>chip_analysis</code> 全部数据。三大官方策略走的都是这条。</td>
+          </tr>
+          <tr>
+            <td class="name-col">Token 实时流触发</td>
+            <td>覆盖全链 token 每秒的变化,适合「扫链」类策略(新代币 / 刚毕业 / 市值刚突破某个阈值)。<strong>只能用 <code>logearn</code> 和 <code>signals</code> 数据</strong>,拿不到持有者和筹码分析。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略触发</td>
+            <td>订阅一条或多条「代币实时流」策略产生的命中代币池,再用更丰富的数据对池子里的币反复检查。可用全部数据 —— 相当于用实时流先粗筛出池子,再拿这条精筛。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">上半页参数</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">适用链</td>
+            <td><code>All</code> / Solana / BNB。图里选的是 Solana。</td>
+          </tr>
+          <tr>
+            <td class="name-col">策略名称</td>
+            <td>默认 <code>新策略-v1</code>。导入官方策略会带原名过来,自己改了参数建议在名字上留个版本号,不然列表里几条长得一样分不清。</td>
+          </tr>
+          <tr>
+            <td class="name-col">信号勾选</td>
+            <td>选了「信号触发」之后才出现,六大信号勾哪几个。图里是 <span class="filter-val">回调反弹</span> + <span class="filter-val">早期精选</span>,也就是强势盘策略那套。</td>
+          </tr>
+          <tr>
+            <td class="name-col">允许同一代币反复命中</td>
+            <td>关掉之后,同一代币命中一次就不再重复检查(命中即终结)。只对普通信号(蓝筹共振 / 反弹 / 放量 / 休眠)生效;<strong>关注和聪明钱本身就会反复买卖,恒定去重,不受这个开关影响</strong>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">生效时间段</td>
+            <td>策略每天生效的时间段,本地时区,可以配多个。当前时间不在任何时段内时策略暂停 —— 不命中也不交易。不设就是全天生效。跨夜时段(如 <code>22:00-02:00</code>)会自动识别,不用拆成两段。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub" id="trade-params">交易参数</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">启用自动交易</td>
+            <td>命中时自动买入。<strong>不勾就只产生策略信号,不下单。</strong>想先观察一段时间的,把这个关掉。</td>
+          </tr>
+          <tr>
+            <td class="name-col">允许同时持有多笔仓位</td>
+            <td>不勾时:不管你同时开了多少条策略,同一个代币只会买一次,除非这个币的仓位卖掉了,再来信号才会重新买。勾上就跳过这道检查,允许对同一个币反复加仓。</td>
+          </tr>
+          <tr>
+            <td class="name-col">只买首次命中</td>
+            <td><strong>勾上</strong>:这个币只买一次,卖出之后即使本策略再次命中也不再买入。<strong>不勾</strong>:只看当前有没有持仓 —— 有持仓就不买,没持仓又来信号就再买一次。</td>
+          </tr>
+          <tr>
+            <td class="name-col">买入下单方式</td>
+            <td><code>市价买入</code>:命中即刻按市价买。<code>网格挂单</code>:不立即买,改成分批挂限价单,配置见下面一节。<strong>切到网格挂单之后,上面的「买单金额」就不用了</strong>,金额改由网格模板决定。</td>
+          </tr>
+          <tr>
+            <td class="name-col">买单金额</td>
+            <td>市价买入时每次买多少,后面选计价币种:USDC / USD1 / USDT / SOL。图里是 <code>10 SOL</code>。</td>
+          </tr>
+          <tr>
+            <td class="name-col">交易钱包</td>
+            <td>下单用哪个钱包,右边显示余额。<strong>导入别人的策略之后这里一定要核一遍</strong> —— 钱包和金额是跟着你自己的账号走的。</td>
+          </tr>
+          <tr>
+            <td class="name-col">止盈止损</td>
+            <td>勾上之后从下拉里选一套止盈止损规则(图里是「1.5段策略止盈止损」),旁边齿轮进去改具体数值。</td>
+          </tr>
+          <tr>
+            <td class="name-col">胜率分布档位</td>
+            <td>自定义策略卡上那五个涨幅档位(单位 %),统计命中代币里有多少比例达到了对应涨幅。留空的档位会被忽略,全部留空就用默认的 <code>30 / 100 / 300 / 500 / 1000</code>。旁边有个 <code>恢复默认</code>。</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3 class="sub">网格挂单</h3>
+      <p class="section-sub">把「买入下单方式」切到 <code>网格挂单</code>,下面会多出一块设置,同时上面的「买单金额」换成「交易币种」。</p>
+
+      <div class="shot-block">
+        <div class="shot-frame">
+          <img src="../shots/grid-order.jpg" alt="grid-order" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">网格挂单展开后的样子。上面红字标的是「只买首次命中」不勾时的行为 —— 持仓不买入,不持仓有信号就买入。</p>
+      </div>
+
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>参数</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td class="name-col">怎么下单</td>
+            <td>命中时不立即市价买入,而是以参考价为基准、在下跌区间内按模板<strong>分批挂限价买单</strong>。卖出仍然走上面配的止盈止损。</td>
+          </tr>
+          <tr>
+            <td class="name-col">交易币种</td>
+            <td>USDC / USD1 / USDT / SOL。模板里配的金额(USD 或原生币)会按当前汇率换算成这个币种再下单。</td>
+          </tr>
+          <tr>
+            <td class="name-col">参考价</td>
+            <td><code>当前市值</code> 或 <code>最高市值</code>。下跌区间是相对这个价算的 —— 选最高市值意味着从历史高点往下挂,同样的区间挂得更低。</td>
+          </tr>
+          <tr>
+            <td class="name-col">下跌区间</td>
+            <td>两个百分比,图里是 <code>-0%</code> 到 <code>-50%</code>,也就是从参考价往下五折这段区间里铺格子。</td>
+          </tr>
+          <tr>
+            <td class="name-col">网格模板</td>
+            <td>决定每笔买多少、铺几格,图里是 <code>买$10平分网格挂单(5 格)</code>。<strong>每笔买入金额来自模板,不是上面的「买单金额」</strong> —— 点旁边齿轮改模板金额。</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>网格挂单和市价买入的取舍。</strong>市价买入是信号一来就吃进,速度优先;网格挂单是等回调分批接,成本优先,但代价是币直接拉走的话一格都成交不了。回调反弹这类信号本来就是买回调的,配网格更顺;早期精选这种要抢速度的,挂网格容易空手。
+      </div>
+
+      <div class="note warn">
+        <strong>导入之后先看两处。</strong>一是<strong>生效时间段</strong> —— 别人导出的策略可能跑在他的作息上,你要按自己的时区和盯盘时间重设。二是<strong>交易钱包和买单金额</strong> —— 这两个跟你自己的账号绑定,不核对就开自动交易等于拿默认值下单。
+      </div>
+
+      <div class="note todo">还缺:<code>AI 生成代码</code> 具体怎么用、止盈止损规则齿轮点进去的配置项。有截图了补进来。</div>
+    </div>
+  </section>
+
+  </main><script src="../site.js"></script><script src="../search.js"></script></body></html>

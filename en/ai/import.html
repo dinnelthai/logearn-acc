@@ -1,0 +1,98 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Importing and Updating — LogEarn</title><meta name="description" content="Import strategies from the official repository and understand the top-bar actions."><link rel="icon" href="../../shots/logo.png"><link rel="stylesheet" href="../../ai-article.css"><link rel="stylesheet" href="../../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../../" data-kb-page="ai-strategy.html" data-kb-alt="../../ai/import.html"><header class="guide-intro"><div class="eyebrow">AI Strategy Guide</div><h1>Importing and Updating</h1><p>Import strategies from the official repository and understand the top-bar actions.</p></header><nav class="guide-local" aria-label="AI strategy guides"><a class="guide-link" href="quick-start.html">Quick Start</a><a class="guide-link" href="strategies.html">Choosing an Official Strategy</a><a class="guide-link" href="import.html" aria-current="page">Importing and Updating</a><a class="guide-link" href="settings.html">Settings and Trading Parameters</a><a class="guide-link" href="logic.html">Strategy Logic and ctx</a><a class="guide-link" href="cases.html">Trading Cases and Further Reading</a></nav><main><section id="import">
+    <div class="wrap">
+      <h2>Importing Official Strategies</h2>
+      <p class="section-sub">No need to configure every parameter by hand. The official team exported the three main strategies as text — paste it in and it just works.</p>
+
+      <div class="zones">
+        <div class="zone">
+          <div class="num">1</div>
+          <div>
+            <h4>Get the Strategy Text</h4>
+            <p>Go to <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a>, open <code>import.txt</code>, and copy the whole content.</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">2</div>
+          <div>
+            <h4>Click "Import" in the Top-Right</h4>
+            <p>On the "My Strategies" page, at the far right of the top bar, next to <code>+ 新增策略</code> (+ New Strategy).</p>
+          </div>
+        </div>
+        <div class="zone">
+          <div class="num">3</div>
+          <div>
+            <h4>Paste, Then Click "Import"</h4>
+            <p>The popup has just one input box, with a placeholder that reads "Paste exported strategy text." Paste it in, click the green <code>导入</code> (Import) button, and the strategy appears in the list — <strong>all parameters come across at once, no manual setup needed</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shot-block" style="margin-top:40px;">
+        <div class="shot-num"><span class="dot">1</span>Import Entry Point</div>
+        <div class="shot-frame">
+          <img src="../../shots/import-entry.jpg" alt="import-entry" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">The <code>导入</code> (Import) button at the right of the top bar, where the red arrow points.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>Import Popup</div>
+        <div class="shot-frame narrow">
+          <img src="../../shots/import-dialog.jpg" alt="import-dialog" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">One input box plus two buttons — nothing else.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">3</span>Copy the Strategy Code</div>
+        <div class="shot-frame">
+          <img src="../../shots/copy-code.jpg" alt="copy-code" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Go to <a href="https://github.com/logearn/logearn-ai-strategies" style="color:var(--green); text-decoration:none;">github.com/logearn/logearn-ai-strategies</a>, open <code>code.js</code>, and copy the whole content into "Strategy Logic."</p>
+      </div>
+
+      <div class="note">
+        <strong>Import is the reverse of "Export."</strong> Every strategy card has an <code>导出</code> (Export) button in its top-right corner; clicking it generates a block of text — that's exactly what you paste here. So besides the official strategies, this is also how people share strategies with each other in the community.
+      </div>
+
+      <h3 class="sub">What Else Is in the Top Bar</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>Location</th>
+            <th>What It Is</th>
+          </tr>
+          <tr>
+            <td class="name-col">My Strategies (6/14)</td>
+            <td>The parentheses show "active / total built." Next to it are three status filter buttons: <code>全部</code> (All), <code>开启中</code> (Active), and <code>已停止</code> (Stopped).</td>
+          </tr>
+          <tr>
+            <td class="name-col">All Strategy Logs</td>
+            <td>A combined trigger log for all strategies.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Strategy Templates (7)</td>
+            <td>7 ready-made templates provided by the official team. This is a separate path from Import — templates are applied directly in-app, while importing means pasting text.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Tutorial</td>
+            <td>Link to the official documentation.</td>
+          </tr>
+          <tr>
+            <td class="name-col">3H / 1D / 7D / 30D / All</td>
+            <td>The time range in the top right. Switching it changes the bar chart and win-rate distribution for every strategy below — <strong>the same strategy's numbers can look completely different between 1D and 30D</strong>, so make sure the tiers match before comparing.</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ New Group</td>
+            <td>For grouping once you have many strategies. Only one group, <code>全部</code> (All), exists by default.</td>
+          </tr>
+          <tr>
+            <td class="name-col">+ New Strategy</td>
+            <td>Build one from scratch — the walkthrough is in the next section.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  </main><script src="../../site.js"></script><script src="../../search.js"></script></body></html>

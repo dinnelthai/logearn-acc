@@ -1,0 +1,228 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Choosing an Official Strategy — LogEarn</title><meta name="description" content="Compare the official strategies, their use cases, and strategy-card information."><link rel="icon" href="../../shots/logo.png"><link rel="stylesheet" href="../../ai-article.css"><link rel="stylesheet" href="../../site.css"><style>.guide-local{max-width:900px;margin:0 auto;padding:18px 24px;display:flex;gap:8px;overflow:auto}.guide-link{white-space:nowrap;padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.guide-link[aria-current="page"]{border-color:var(--green-dim);color:var(--green)}.guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}</style></head><body data-kb-root="../../" data-kb-page="ai-strategy.html" data-kb-alt="../../ai/strategies.html"><header class="guide-intro"><div class="eyebrow">AI Strategy Guide</div><h1>Choosing an Official Strategy</h1><p>Compare the official strategies, their use cases, and strategy-card information.</p></header><nav class="guide-local" aria-label="AI strategy guides"><a class="guide-link" href="quick-start.html">Quick Start</a><a class="guide-link" href="strategies.html" aria-current="page">Choosing an Official Strategy</a><a class="guide-link" href="import.html">Importing and Updating</a><a class="guide-link" href="settings.html">Settings and Trading Parameters</a><a class="guide-link" href="logic.html">Strategy Logic and ctx</a><a class="guide-link" href="cases.html">Trading Cases and Further Reading</a></nav><main><section id="official-strategies">
+    <div class="wrap">
+      <h2>The Three Official Strategies</h2>
+      <p class="section-sub">The engine ships with three official strategies preloaded, all live and running with real trading data. You can treat them purely as signals, or turn on automated trading orders directly.</p>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>1.5-Stage Strategy · Strong-Market Strategy</div>
+        <div class="shot-frame">
+          <img src="../../shots/official-strategy-1.jpg" alt="official-strategy-1" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Each strategy is one full block: a bar chart of historical hits on the left, returns and win-rate distribution in the middle, and the six-layer filter counts plus the run/pause toggle on the right.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>Wake-up Relay Strategy</div>
+        <div class="shot-frame">
+          <img src="../../shots/official-strategy-2.jpg" alt="official-strategy-2" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">This one has <code>自动交易</code> (Auto Trading) checked — once it hits, there's no manual order needed, it's placed automatically.</p>
+      </div>
+
+      <div class="note">
+        <strong>The Wake-up Relay Strategy is best paired with grid orders.</strong> Set the buy method to <code>网格挂单</code> (Grid Order), the reference price to <code>当前市值</code> (Current Market Cap), and the drawdown range to <code>30%</code> ~ <code>100%</code>. This way, a hit doesn't trigger a single market buy — instead it lays down limit orders in batches across the drawdown range from market cap, averaging down the cost basis.
+      </div>
+
+      <div class="strategy-tabs">
+        <div class="tab-header" role="tablist">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="suxing-guadan">Wake-up Strategy Order Tips</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="sandia-duibi">Comparing the Three Strategies</button>
+        </div>
+        <div class="tab-panel active" id="tab-suxing-guadan" role="tabpanel">
+          <div class="shot-block">
+            <div class="shot-num"><span class="dot">1</span>Wake-up Strategy Order Parameters</div>
+            <div class="shot-frame">
+              <img src="../../shots/grid-order.jpg" alt="grid-order" loading="lazy" decoding="async">
+            </div>
+            <p class="shot-caption">Grid Order + Current Market Cap + drawdown range 30% ~ 100%.</p>
+          </div>
+        </div>
+        <div class="tab-panel" id="tab-sandia-duibi" role="tabpanel">
+          <h3 class="sub">The Three Strategies Side by Side</h3>
+      <div class="table-scroll keep">
+        <table class="compare-table">
+          <tr>
+            <th>Metric</th>
+            <th>1.5-Stage Strategy</th>
+            <th>Strong-Market Strategy</th>
+            <th>Wake-up Relay Strategy</th>
+          </tr>
+          <tr>
+            <td class="metric">Running For</td>
+            <td>28 days</td>
+            <td>1 month</td>
+            <td>1 month</td>
+          </tr>
+          <tr>
+            <td class="metric">Signals Checked</td>
+            <td><span class="filter-val">Post-pullback Rebound Signal</span></td>
+            <td><span class="filter-val">Post-pullback Rebound Signal</span> <span class="filter-val">Early Pick</span></td>
+            <td><span class="filter-val">Wake-up Signal</span></td>
+          </tr>
+          <tr>
+            <td class="metric">Highest Return</td>
+            <td class="hi">957%</td>
+            <td class="hi">2536%</td>
+            <td class="hi">694%</td>
+          </tr>
+          <tr>
+            <td class="metric">Tokens Matched</td>
+            <td class="hi">32</td>
+            <td class="hi">120</td>
+            <td class="hi">4</td>
+          </tr>
+          <tr>
+            <td class="metric">Win Rate &gt;30%</td>
+            <td>81%</td>
+            <td>76%</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td class="metric">Win Rate &gt;100%</td>
+            <td>56%</td>
+            <td>44%</td>
+            <td>100%</td>
+          </tr>
+          <tr>
+            <td class="metric">Win Rate &gt;300%</td>
+            <td>13%</td>
+            <td>20%</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td class="metric">Win Rate &gt;500%</td>
+            <td>6%</td>
+            <td>12%</td>
+            <td>25%</td>
+          </tr>
+          <tr>
+            <td class="metric">Top Tier</td>
+            <td>&gt;2000% · 0%</td>
+            <td>&gt;1000% · 5%</td>
+            <td>&gt;1000% · 0%</td>
+          </tr>
+          <tr>
+            <td class="metric">Total Triggers</td>
+            <td>3.27K</td>
+            <td>10.38K</td>
+            <td>2.94K</td>
+          </tr>
+          <tr>
+            <td class="metric">Bot Notification</td>
+            <td>Off</td>
+            <td>Off</td>
+            <td>Off</td>
+          </tr>
+          <tr>
+            <td class="metric">Auto Trading</td>
+            <td>Off</td>
+            <td>Off</td>
+            <td><span class="hi">On</span></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note">
+        <strong>Don't judge tokens-matched by the absolute number alone.</strong> Wake-up Relay only matched 4 tokens, but all 4 went up over 100%, so both the &gt;30% and &gt;100% tiers show 100%; Strong-Market matched 120 tokens, and with that larger sample the &gt;30% tier gets diluted down to 76%. A strategy with a small sample size will naturally look great on win rate — always look at total triggers and tokens matched together.
+      </div>
+        </div>
+      </div>
+
+      <h3 class="sub">Core of the Wake-up Strategy: Sustained 1-Minute Volume</h3>
+      <p class="section-sub">The Wake-up Relay Strategy puts heavy weight on <strong>whether 1-minute trading volume is sustained</strong>. A rising price is only the surface — whether volume underneath keeps up is the real key to deciding whether to hold or run.</p>
+
+      <div class="note">
+        <strong>Core principle:</strong> if the price rises but volume doesn't keep up, run immediately; if the first volume spike is huge but subsequent volume collapses quickly, that's also dangerous. Only <strong>rising price + sustained volume expansion</strong> is worth holding and watching.
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>Sustained Volume: Price Rises, Volume Keeps Up</div>
+        <div class="shot-frame">
+          <img src="../../shots/suxing-vol-continuous.jpg" alt="suxing-vol-continuous" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Volume in the red box is clearly larger than before, and the following bars stay elevated too — this kind of price/volume alignment counts as healthy.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">2</span>Danger Signal: One Huge Bar, No Follow-Through</div>
+        <div class="shot-frame">
+          <img src="../../shots/suxing-vol-danger.jpg" alt="suxing-vol-danger" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">The first volume spike is huge, but volume collapses quickly afterward — price easily loses support in this kind of move, so don't stick around.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">3</span>Healthy Trend: Volume Consistently Keeps Up with Price</div>
+        <div class="shot-frame">
+          <img src="../../shots/suxing-vol-follow.jpg" alt="suxing-vol-follow" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">Every leg of the price rise is backed by volume, which shows money is continuously flowing in — this fits the Wake-up Strategy's entry/hold criteria better.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">4</span>Internal-Market / Whale-Dominated Charts: Recognizing and Avoiding Them</div>
+        <div class="shot-frame pending">
+          Screenshot pending · neipan-zhuli
+        </div>
+        <p class="shot-caption">When a chart is dominated by the internal market / a whale, the pattern often shows a sudden pump followed by a quick dump. Combine price action with volume distribution, and watch out for "pump-and-promote-to-dump" style bait.</p>
+      </div>
+
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">5</span>Holder Distribution Peak: From Scattered to Concentrated</div>
+        <div class="shot-frame pending">
+          Screenshot pending · chouma-concentration
+        </div>
+        <p class="shot-caption">At circle 2 in the chart, the holder-distribution peak shifts from scattered dumping to concentration, which suggests capital is regrouping — combine this with price and volume to judge whether it's a new accumulation signal.</p>
+      </div>
+
+      <h3 class="sub">What's on a Strategy Card</h3>
+      <div class="table-scroll">
+        <table class="param-table">
+          <tr>
+            <th>Location</th>
+            <th>What It Is</th>
+          </tr>
+          <tr>
+            <td class="name-col">Title Row</td>
+            <td>Strategy name + how long it's been running (<code>28天</code> (28 days) / <code>1月</code> (1 month)). The ▶ on the far left is the collapse toggle; the row of icons on the right is group, export, share, edit, and delete.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Signal Checkbox Row</td>
+            <td>The six signal types — <span class="filter-val">Blue-chip Top Wallet Resonance</span> <span class="filter-val">Post-pullback Rebound Signal</span> <span class="filter-val">Early Pick</span> <span class="filter-val">Wake-up Signal</span> <span class="filter-val">Watched Wallets</span> <span class="filter-val">Smart Money</span> — whichever are checked are the ones this strategy consumes.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Bar Chart</td>
+            <td>Historical hits sorted by time. Green bars are up moves, labeled with the max gain (<code>9.56x</code>, <code>85.78%</code>); the small red squares underneath are the ones that didn't take off. The horizontal axis is time-since-hit (<code>5分钟</code> (5 minutes) to <code>23小时</code> (23 hours)).</td>
+          </tr>
+          <tr>
+            <td class="name-col">Highest Return / Tokens Matched</td>
+            <td>The single largest gain for one token so far under this strategy, and the total number of tokens matched.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Win-Rate Distribution</td>
+            <td>Of the matched tokens, what percentage exceeded each gain tier. <strong>These five tiers are self-defined when you build the strategy</strong>, defaulting to <code>30 / 100 / 300 / 500 / 1000</code>; the 1.5-Stage Strategy changed its top tier to <code>2000</code>. So comparing the top tier across strategies isn't meaningful — configuration is under <a href="settings.html#trade-params" style="color:var(--green); text-decoration:none;">Trading Parameters ↓</a></td>
+          </tr>
+          <tr>
+            <td class="name-col">Six-Layer Filter</td>
+            <td>Total triggers, signal filter, indicator filter, dimension filter, holder filter, and narrative filter each get their own count bar. A number equal to total triggers means that layer didn't screen anything out; <code>0</code> means no condition was set on that layer.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Bot Notification / Auto Trading</td>
+            <td>Two independent toggles. Checking only Bot Notification treats it as a signal and pushes it to you when it hits; checking Auto Trading means a hit places an order directly.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Running (click to pause)</td>
+            <td>The strategy's master switch. Click once to stop it — once stopped, it no longer triggers.</td>
+          </tr>
+          <tr>
+            <td class="name-col">Token Cards at the Bottom</td>
+            <td>The most recently matched tokens; each card shows the token name, how long ago it hit, which strategy it came from, the market-cap range (<code>$18.0k → $42.2k</code>), and the max gain.</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="note todo">Still need to confirm with the official team exactly what the Six-Layer Filter counts mean (running total left after each layer, or each layer's own hit count) — come back and fix this row once confirmed.</div>
+    </div>
+  </section>
+
+  </main><script src="../../site.js"></script><script src="../../search.js"></script></body></html>
