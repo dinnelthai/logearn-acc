@@ -5,7 +5,6 @@ from pathlib import Path
 
 ROOT=Path(__file__).parent
 GUIDES=[
- ('quick-start','zones','official-strategies','快速开始','Quick Start','了解策略引擎入口和整体工作流程。','Learn where the strategy engine appears and how the workflow fits together.'),
  ('strategies','official-strategies','import','官方策略怎么选','Choosing an Official Strategy','对比三大官方策略、适用场景和策略卡信息。','Compare the official strategies, their use cases, and strategy-card information.'),
  ('import','import','basic-settings','导入与更新策略','Importing and Updating','从官方仓库导入策略，并理解顶部操作入口。','Import strategies from the official repository and understand the top-bar actions.'),
  ('settings','basic-settings','logic','基本设置与交易参数','Settings and Trading Parameters','配置触发方式、交易参数和网格挂单。','Configure triggers, trading parameters, and grid orders.'),

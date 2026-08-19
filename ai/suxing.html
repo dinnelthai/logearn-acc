@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>苏醒战法 — LogEarn</title>
+  <meta name="description" content="通过 1 分钟成交量、价格行为、内盘主力和筹码峰变化判断苏醒行情。">
+  <link rel="icon" href="../shots/logo.png">
+  <link rel="stylesheet" href="../ai-article.css">
+  <link rel="stylesheet" href="../site.css">
+  <style>
+    .guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}
+    .method-nav{max-width:900px;margin:0 auto;padding:0 24px 20px;display:flex;gap:8px;flex-wrap:wrap}.method-nav a{padding:7px 10px;border:1px solid var(--line);border-radius:8px;color:var(--text-dim);text-decoration:none;font-size:12px}.method-nav a:hover{border-color:var(--green-dim);color:var(--green)}
+    .ways{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.way{padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--bg-card)}.way-num{color:var(--green);font-weight:800;font-size:13px}.way h3{margin:8px 0}.way p{margin:0;color:var(--text-dim)}@media(max-width:700px){.ways{grid-template-columns:1fr}}
+    .exit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:24px}.exit-item{padding:18px;border:1px solid var(--line);border-radius:12px;background:var(--bg-card)}.exit-item strong{display:block;margin-bottom:6px;color:var(--text)}.exit-item p{margin:0;color:var(--text-dim);font-size:14px}.exit-item:last-child{grid-column:1/-1}@media(max-width:700px){.exit-grid{grid-template-columns:1fr}.exit-item:last-child{grid-column:auto}}
+  </style>
+</head>
+<body data-kb-root="../" data-kb-page="ai/suxing.html">
+  <header class="guide-intro">
+    <div class="eyebrow">场景 · 实战战法</div>
+    <h1>苏醒战法</h1>
+    <p>抓苏醒盘有两种方式：手动搭建苏醒看板，或直接使用苏醒策略。找到目标后，再结合成交量和筹码结构判断是否参与。</p>
+  </header>
+  <nav class="method-nav" aria-label="本文目录">
+    <a href="#two-ways">两种方式</a><a href="#build-board">搭建苏醒看板</a><a href="#use-strategy">苏醒策略</a><a href="#narrative-cases">结合叙事</a><a href="#exit-method">出场方式</a><a href="#extra-signals">辅助判断</a>
+  </nav>
+  <main>
+    <section id="two-ways">
+      <div class="wrap">
+        <h2>两个抓苏醒盘的方式</h2>
+        <p class="section-sub">两种方式解决的是同一个问题：尽快发现进入苏醒阶段的代币。看板适合手动筛选和盯盘，策略适合持续运行和自动发现。</p>
+        <div class="ways">
+          <a class="way" href="#build-board"><div class="way-num">方式 1</div><h3>搭建苏醒看板</h3><p>在信号看板中只筛选“苏醒信号”，集中观察最新命中的代币。</p></a>
+          <a class="way" href="#use-strategy"><div class="way-num">方式 2</div><h3>使用苏醒策略</h3><p>运行苏醒接力策略，让系统持续过滤并记录符合条件的目标。</p></a>
+        </div>
+      </div>
+    </section>
+    <section id="build-board">
+      <div class="wrap">
+        <h2>方式 1：搭建苏醒看板</h2>
+        <p class="section-sub">进入信号榜单的过滤条件，将信号类型只保留“苏醒信号”，确认后即可得到专门的苏醒看板。</p>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">1</span>信号过滤只选择“苏醒信号”</div>
+          <div class="shot-frame"><img src="../shots/suxing-board.jpg" alt="在信号过滤条件中选择苏醒信号，搭建苏醒看板" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">打开信号榜单右上角的过滤入口，在“头像”分类中勾选“苏醒信号”，其他过滤条件可按自己的关注范围继续收紧。</p>
+        </div>
+        <div class="note"><strong>适合：</strong>想手动挑选、逐个打开详情页看 K 线，并根据盘面自行决定是否参与的人。</div>
+      </div>
+    </section>
+    <section id="use-strategy">
+      <div class="wrap">
+        <h2>方式 2：使用苏醒策略</h2>
+        <p class="section-sub">在 AI 策略引擎中使用“苏醒接力策略”，系统会持续过滤苏醒信号，并在策略卡中展示命中目标、最大涨幅和胜率分布。</p>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">2</span>运行苏醒接力策略</div>
+          <div class="shot-frame"><img src="../shots/suxing-strategy.jpg" alt="AI 策略引擎中的苏醒接力策略" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">策略卡可查看最高收益、命中代币、不同涨幅档位胜率、过滤层状态和最近命中的代币。</p>
+        </div>
+        <div class="note"><strong>适合：</strong>希望系统长期运行、自动筛选目标的人。刚开始建议先关闭自动交易，只观察策略命中结果；熟悉后再配置交易参数。</div>
+        <p><a href="strategies.html" style="color:var(--green);text-decoration:none;font-weight:700">查看官方策略说明 →</a></p>
+      </div>
+    </section>
+    <section id="narrative-cases">
+      <div class="wrap">
+        <h2>苏醒战法核心：结合叙事</h2>
+        <p class="section-sub">苏醒信号负责发现盘面重新活跃，叙事负责判断这次活跃有没有持续传播的理由。两者同时出现，才值得优先观察。</p>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">1</span>Case 1：大 V 发推，Google 官方回复</div>
+          <div class="shot-frame"><img src="../shots/suxing-case-1.jpg" alt="大 V 发布橙猫 Boss 的推文后，Google 官方账号回复，盘面随后出现苏醒行情" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">大 V 先发布橙猫 Boss 的故事，随后 Google 官方账号参与回复，原本的小众话题获得更强的官方背书和传播入口。图中箭头位置附近，盘面开始重新放量并进入苏醒阶段。</p>
+        </div>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">2</span>Case 2：社区对立梗被大 V 接力放大</div>
+          <div class="shot-frame"><img src="../shots/suxing-case-2.jpg" alt="Frank DeGods 等交易员围绕 oldheads 与 plumbers 话题互动后，相关代币出现苏醒行情" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">交易员围绕“oldheads vs plumbers”制造对立讨论，随后更多社区大 V 参与回应，话题被快速产品化为代币。叙事从内部文化梗扩散成可交易热点，盘面随讨论升温而苏醒。</p>
+        </div>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">3</span>Case 3：品牌事件叠加官方互动</div>
+          <div class="shot-frame"><img src="../shots/suxing-case-3.jpg" alt="法拉利 C726 事件及相关账号互动带来的两段苏醒行情" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">法拉利 C726 事件先带来第一轮注意力，后续相关官方账号互动形成第二次催化。图中两处箭头对应两轮叙事传播，盘面也出现两次明显放量和价格反应。</p>
+        </div>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">4</span>Case 4：科技事件成为新催化</div>
+          <div class="shot-frame"><img src="../shots/suxing-case-4.jpg" alt="宇树科技相关消息出现后，牛气冲天代币放量苏醒" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">长期沉寂后出现与宇树科技相关的新消息，旧叙事获得新的传播理由。消息点附近成交量突然放大，价格快速脱离低位，形成典型的事件驱动型苏醒。</p>
+        </div>
+        <div class="note"><strong>四类叙事链路：</strong>大 V 发声 + 官方回复、社区对立梗接力、品牌事件 + 后续互动、科技事件催化。共同点都是旧盘获得新的讨论理由，随后成交量和价格同步活跃。</div>
+        <div class="note"><strong>观察重点：</strong>不能只看消息标题就追。还要确认消息发生后成交量是否回升、价格是否脱离长期低迷区，以及后续是否仍有新的讨论和资金承接。</div>
+      </div>
+    </section>
+    <section id="exit-method">
+      <div class="wrap">
+        <h2>苏醒出场方式</h2>
+        <p class="section-sub">出场不只看一个指标。优先观察 AO、VWAP、成交量和 K 线形态是否同时转弱；多个信号叠加时，应更主动地减仓或退出。</p>
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">1</span>出场信号示意</div>
+          <div class="shot-frame"><img src="../shots/suxing-exit.jpg" alt="苏醒战法的 AO、VWAP、成交量与上影线出场信号" loading="lazy" decoding="async"></div>
+          <p class="shot-caption">图中从 AO、VWAP、价格距离和放量上影线四个角度标出了常见的出场判断。</p>
+        </div>
+        <div class="exit-grid">
+          <div class="exit-item"><strong>1. AO 出现第二根红柱</strong><p>AO 由强转弱并连续出现红柱时，视为一条出场预警，第二根红柱可作为更明确的确认信号。</p></div>
+          <div class="exit-item"><strong>2. 买点保持在 VWAP 上方</strong><p>理想的强势阶段应运行在 VWAP 上方；若价格持续失去 VWAP 支撑，需要降低继续持有的预期。</p></div>
+          <div class="exit-item"><strong>3. 跌破 VWAP，执行清仓</strong><p>价格明确跌破 VWAP 且不能快速收回时，按该战法的纪律退出，避免弱势阶段继续消耗利润。</p></div>
+          <div class="exit-item"><strong>4. 价格距离 VWAP 越远，越要分批止盈</strong><p>价格大幅偏离 VWAP，代表短期涨幅已经加速。距离越大，越应主动分批落袋，而不是等待单一顶部信号。</p></div>
+          <div class="exit-item"><strong>5. 暴量叠加上影线，是集中出货信号</strong><p>高位突然放出巨量，同时 K 线留下明显上影线，说明抛压增强，是减仓或退出的重要时机。</p></div>
+        </div>
+        <div class="note"><strong>执行顺序：</strong>先看价格是否仍站在 VWAP 上方，再看 AO 是否连续转红，最后结合高位成交量与上影线确认。多个信号同时出现时，出场优先级更高。</div>
+      </div>
+    </section>
+    <section id="extra-signals">
+      <div class="wrap">
+        <h2>辅助判断</h2>
+        <div class="note"><strong>内盘主力：</strong>若盘面由内盘或主力主导，走势常表现为突然拉抬后快速出货。需要结合价格行为与成交量分布，警惕推广诱多。</div>
+        <div class="note"><strong>筹码峰：</strong>筹码峰由分散派发逐渐转为聚集，可能说明资金正在重新聚拢。必须结合价格和成交量确认是否形成新一轮承接。</div>
+      </div>
+    </section>
+  </main>
+  <script src="../site.js"></script>
+  <script src="../search.js"></script>
+</body>
+</html>

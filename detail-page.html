@@ -187,6 +187,11 @@
   }
   .note.warn{ border-left-color: var(--red); }
 
+  .layout-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:24px; }
+  .layout-item{ padding:18px; border:1px solid var(--line); border-radius:10px; background:var(--bg-card); }
+  .layout-item strong{ display:block; color:var(--green); font-size:14px; margin-bottom:5px; }
+  .layout-item p{ color:var(--text-dim); font-size:14px; }
+
   footer{ padding: 48px 24px 0; color: var(--text-faint); font-size: 13px; }
   footer a{ color: var(--text-dim); text-decoration: none; }
   footer a:hover{ color: var(--green); }
@@ -201,6 +206,7 @@
     .section-sub{ font-size: 14px; margin-bottom: 26px; }
     .shot-block{ margin-bottom: 40px; }
     .callout-label{ font-size: 10.5px; padding: 3px 7px; }
+    .layout-grid{ grid-template-columns:1fr; }
 
     /* 参数表改成堆叠卡片 */
     .table-scroll{ overflow: visible; }
@@ -241,7 +247,58 @@
     </div>
   </header>
 
-  <main id="content"></main>
+  <main id="content">
+    <section id="general-detail">
+      <div class="wrap">
+        <h2>详情页布局</h2>
+        <p class="section-sub">详情页以 K 线为中心，左侧负责发现代币，中间负责看盘，右侧负责交易和指标，底部用于快速切换功能。</p>
+
+        <div class="shot-frame">
+          <img src="shots/detail-page-layout.jpg" alt="LogEarn 代币详情页布局总览，标注关注榜单、信号榜单、热门榜单、战壕、K线、指标和快捷拖拽区" width="2600" height="1327" loading="lazy" decoding="async">
+        </div>
+        <p class="shot-caption">详情页总览：红框和红字标出了页面的主要区域。</p>
+
+        <div class="layout-grid">
+          <div class="layout-item"><strong>1. 关注榜单</strong><p>页面左上方的横向列表，用来快速查看和切换正在关注的代币。</p></div>
+          <div class="layout-item"><strong>2. 信号榜单</strong><p>左侧上半区展示信号命中的代币，可按信号类型继续筛选。</p></div>
+          <div class="layout-item"><strong>3. 热门榜单</strong><p>左侧下半区展示热门代币，可在不同热门分类和时间范围之间切换。</p></div>
+          <div class="layout-item"><strong>4. 战壕</strong><p>中间偏左的代币流，按新创建、即将迁移和已迁移等阶段查看目标。</p></div>
+          <div class="layout-item"><strong>5. K 线主区</strong><p>页面中央用于看价格、市值、成交量、AO、VWAP 和筹码分布等信息。</p></div>
+          <div class="layout-item"><strong>6. 交易与指标区</strong><p>右侧包含买卖面板、特色指标、AI 持仓指标和 AI 特色指标。</p></div>
+          <div class="layout-item"><strong>7. 快捷拖拽区</strong><p>页面底部可快速打开自选、信号、热门、监控、仓位、战壕和 AI 策略等模块。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chip-distribution">
+      <div class="wrap">
+        <h2>筹码分析</h2>
+        <p class="section-sub">在 K 线图右下方可以看到三个筹码分析按钮。它们分别解决区间筹码、内盘筹码和整体筹码分布三个问题。</p>
+
+        <div class="shot-block">
+          <div class="shot-num"><span class="dot">1</span>找到三个筹码分析入口</div>
+          <div class="shot-frame">
+            <img src="shots/chip-analysis-entry.jpg" alt="K线图右下方的自定义区间筹码分析、内盘筹码分析和筹码分布及概况三个按钮" width="2200" height="1657" loading="lazy" decoding="async">
+          </div>
+          <p class="shot-caption">三个按钮位于 K 线图右下方：<code>自定义区间筹码分析</code>、<code>内盘筹码分析</code>、<code>筹码分布及概况</code>。</p>
+        </div>
+
+        <div class="layout-grid">
+          <div class="layout-item"><strong>自定义区间筹码分析</strong><p>在 K 线上选择一段时间区间，查看该区间内买卖双方、资金流向、钱包和回报率等数据。</p></div>
+          <div class="layout-item"><strong>内盘筹码分析</strong><p>查看代币内盘阶段的筹码和钱包行为，用来判断早期筹码结构。</p></div>
+          <div class="layout-item"><strong>筹码分布及概况</strong><p>在图表上显示筹码峰和筹码概况，观察筹码主要集中在哪些价格或市值区间。</p></div>
+        </div>
+
+        <div class="shot-block" style="margin-top:40px;">
+          <div class="shot-num"><span class="dot">2</span>查看区间分析结果</div>
+          <div class="shot-frame">
+            <img src="shots/chip-analysis-result.jpg" alt="自定义区间筹码分析结果，展示区间买卖分析、钱包分类、流入、卖出和回报率" width="2200" height="1721" loading="lazy" decoding="async">
+          </div>
+          <p class="shot-caption">选择区间后，下方会展开区间买卖分析和钱包明细，可查看主力、项目方、高频交易者、蓝筹赢家、垃圾钱包等分类，以及流入、卖出和回报率。</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <div class="wrap"><a href="index.html">← 返回 LogEarn 知识库</a> · 产品使用说明</div>

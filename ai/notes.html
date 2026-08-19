@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI 策略注意事项 — LogEarn</title>
+  <meta name="description" content="LogEarn AI 策略目前采用全前端运行方式，电脑需要保持运行。">
+  <link rel="icon" href="../shots/logo.png">
+  <link rel="stylesheet" href="../ai-article.css">
+  <link rel="stylesheet" href="../site.css">
+  <style>
+    .guide-intro{max-width:900px;margin:0 auto;padding:58px 24px 24px}.guide-intro h1{margin:8px 0 12px}.guide-intro p{color:var(--text-dim)}
+    .runtime-warning{padding:28px;border:1px solid rgba(255,184,77,.45);border-left:4px solid #ffb84d;border-radius:14px;background:rgba(255,184,77,.06)}.runtime-warning h2{margin-top:0}.runtime-warning p{margin-bottom:0;color:var(--text-dim);font-size:16px;line-height:1.8}.runtime-warning strong{color:var(--text)}
+    .run-modes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:22px}.run-mode{padding:22px;border:1px solid var(--line);border-radius:14px;background:var(--bg-card)}.run-mode .label{color:var(--green);font-size:13px;font-weight:800}.run-mode h3{margin:8px 0}.run-mode p{margin:0;color:var(--text-dim);line-height:1.7}@media(max-width:700px){.run-modes{grid-template-columns:1fr}}
+  </style>
+</head>
+<body data-kb-root="../" data-kb-page="ai/notes.html">
+  <header class="guide-intro"><div class="eyebrow">AI 策略专题</div><h1>注意事项</h1><p>运行 AI 策略前，请先确认电脑能够持续保持在线。</p></header>
+  <main>
+    <section><div class="wrap">
+      <div class="runtime-warning"><h2>电脑必须保持运行</h2><p>目前 AI 策略采用<strong>全前端运行方式</strong>。如果电脑关机或进入黑屏状态，策略就会失效，不再产生信号。</p></div>
+    </div></section>
+    <section><div class="wrap">
+      <h2>建议的运行方式</h2>
+      <p class="section-sub">为 AI 策略单独打开一个浏览器页签，并让这个页签保持激活。右上角通信状态持续显示 <code>Master</code>，代表当前策略页面处于运行状态。</p>
+      <div class="shot-block">
+        <div class="shot-num"><span class="dot">1</span>检查通信状态与页面自动刷新</div>
+        <div class="shot-frame"><img src="../shots/ai-runtime-master.jpg" alt="AI 策略页面右上角通信状态显示 Master，并可设置页面自动刷新" loading="lazy" decoding="async"></div>
+        <p class="shot-caption">通信状态在策略页面右上角。保持显示 <code>Master</code>，说明该页签正在负责策略运行。</p>
+      </div>
+      <div class="run-modes">
+        <div class="run-mode"><div class="label">人在电脑前</div><h3>关闭自动刷新</h3><p>保持策略页面单独开启并处于激活状态，页面自动刷新选择“关闭”。持续关注通信状态，确认一直显示 <code>Master</code>。</p></div>
+        <div class="run-mode"><div class="label">暂时不在电脑前</div><h3>自动刷新设为 60 分钟</h3><p>将策略页的页面自动刷新设置为 <code>60分钟</code>，然后关闭其他 LogEarn 页签，只保留这个策略页签运行。</p></div>
+      </div>
+      <div class="note"><strong>关键：</strong>不要同时保留多个 LogEarn 页签运行策略。以单独策略页签中的 <code>Master</code> 状态为准。</div>
+    </div></section>
+  </main>
+  <script src="../site.js"></script><script src="../search.js"></script>
+</body>
+</html>
