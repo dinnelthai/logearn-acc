@@ -16,7 +16,7 @@
     --amber: #f2b544;
     --text: #e9efe9;
     --text-dim: #8ea092;
-    --text-faint: #5a685f;
+    --text-faint: #718075;
     --font-display: 'Space Grotesk', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
   }
@@ -88,6 +88,8 @@
     display: block;
     cursor: pointer;
   }
+  .card-link h3::after{ content: "→"; color: var(--green); margin-left: 6px; font-weight: 400; }
+  .card-link:focus-visible{ outline: 2px solid var(--green); outline-offset: 3px; border-radius: 6px; }
   .card .icon{
     width: 34px; height: 34px; border-radius: 8px;
     background: var(--bg-card-2);
@@ -107,8 +109,9 @@
   }
   .card .sub-links a{
     font-size: 12.5px; color: var(--green); text-decoration: none;
+    display: inline-flex; align-items: center; min-height: 22px;
   }
-  .card .sub-links a:hover{ text-decoration: underline; }
+  .card .sub-links a:hover, .card .sub-links a:focus-visible{ text-decoration: underline; }
   .card.disabled{ opacity: .62; cursor: default; }
   .soon-tag{
     display: inline-block; margin-top: 14px;
@@ -118,6 +121,72 @@
     padding: 2px 10px;
   }
   .card.disabled:hover{ border-color: var(--line); background: var(--bg-card); }
+
+  .soon-strip{
+    margin-top: 20px; padding: 14px 18px;
+    border: 1px dashed var(--line); border-radius: 10px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px;
+    font-size: 13px; color: var(--text-faint);
+  }
+  .soon-strip-label{
+    font-family: var(--font-display); font-size: 11px; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--text-dim);
+    border-right: 1px solid var(--line); padding-right: 14px;
+  }
+  @media (max-width: 640px){
+    .soon-strip-label{ border-right: none; padding-right: 0; }
+  }
+
+  .task-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .task-card{
+    display: block; text-decoration: none; color: inherit;
+    border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); padding: 22px;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  .task-card:hover, .task-card:focus-visible{
+    border-color: var(--green); background: var(--bg-card-2);
+    transform: translateY(-2px);
+  }
+  .task-card .task-icon{
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--bg-card-2); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-bottom: 14px;
+  }
+  .task-card h3{
+    font-family: var(--font-display);
+    font-weight: 500; font-size: 16px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .task-card h3::after{ content: "→"; color: var(--green); font-weight: 400; }
+  .task-card p{ font-size: 13.5px; color: var(--text-dim); }
+
+  .path-title{
+    font-family: var(--font-display);
+    font-weight: 500; font-size: 15px; margin: 32px 0 14px;
+    color: var(--text-dim);
+  }
+  .path-list{ list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 8px; }
+  .path-list li{
+    counter-increment: step;
+    display: flex; align-items: baseline; gap: 10px;
+    font-size: 13.5px; color: var(--text-dim);
+  }
+  .path-list li::before{
+    content: counter(step);
+    flex: none; width: 20px; height: 20px; border-radius: 50%;
+    background: var(--bg-card-2); border: 1px solid var(--green-dim);
+    color: var(--green); font-size: 11px; font-family: var(--font-display);
+    display: flex; align-items: center; justify-content: center;
+    transform: translateY(1px);
+  }
+  .path-list a{ color: var(--green); text-decoration: none; }
+  .path-list a:hover{ text-decoration: underline; }
 
   .external-row{ display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
   .pill{
@@ -154,18 +223,53 @@
       <div class="eyebrow">知识库</div>
       <h1>LogEarn 知识库</h1>
       <p class="lede">新人入门、产品使用、基础知识、信号系统、策略库、复盘归档 —— 按分区整理,快速找到你需要的内容。</p>
+      <div class="site-search" style="margin-top:24px;"><input type="text" id="site-search-input" placeholder="搜索文档…(Credits、VIP、信号、K线…)" autocomplete="off"></div>
     </div>
   </header>
 
   <section>
     <div class="wrap">
+      <h2>从这里开始</h2>
+      <p class="section-sub">按你现在的情况选一个,不用自己判断该归哪个分区。</p>
+      <div class="task-grid">
+        <a class="task-card" href="faq.html">
+          <div class="task-icon">🚀</div>
+          <h3>第一次使用 LogEarn</h3>
+          <p>新人必读 + FAQ,先搞懂 Credits、VIP 这些绕不开的基础问题。</p>
+        </a>
+        <a class="task-card" href="faq.html#cat-异常排查">
+          <div class="task-icon">🛠️</div>
+          <h3>我遇到了问题</h3>
+          <p>K线/指标异常、看板配置、风控判断,直接跳到对应的 FAQ 分类。</p>
+        </a>
+        <a class="task-card" href="signal-filter.html">
+          <div class="task-icon">📡</div>
+          <h3>我想学习信号与策略</h3>
+          <p>六大信号怎么筛、AI 策略引擎怎么配、有哪些实战案例。</p>
+        </a>
+      </div>
+
+      <h3 class="path-title">推荐阅读顺序(新人从上到下看一遍)</h3>
+      <ol class="path-list">
+        <li>注册与安全 —— <a href="https://logearn.gitbook.io/logearn-jiao-cheng-wen-dang" target="_blank">官方 GitBook 教程</a></li>
+        <li><a href="detail-page.html">产品界面 · 代币详情页布局</a></li>
+        <li><a href="signal-filter.html">六大信号自定义筛选</a></li>
+        <li><a href="faq.html#cat-看板配置">看板筛选设置(FAQ)</a></li>
+        <li><a href="faq.html#cat-风控判断">风控判断(FAQ)</a></li>
+        <li><a href="recap.html">第一次复盘 · 复盘归档</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
       <h2>六大分区</h2>
-      <p class="section-sub">点击卡片进入对应分区。新人入门、产品使用、策略库、复盘归档下面已经有内容,其余两个分区陆续补。</p>
+      <p class="section-sub">点击卡片进入对应分区。新人入门、产品使用、策略库、复盘归档下面已经有内容。</p>
       <div class="grid">
 
         <div class="card">
           <a class="card-link" href="faq.html">
-            <div class="icon">�</div>
+            <div class="icon">🎓</div>
             <h3>新人入门</h3>
             <p>7天路线图、新人必读、FAQ 常见问题</p>
           </a>
@@ -178,7 +282,7 @@
 
         <div class="card">
           <a class="card-link" href="signal-filter.html">
-            <div class="icon">�️</div>
+            <div class="icon">🖥️</div>
             <h3>产品使用</h3>
             <p>功能总览、操作教程、常见问题</p>
           </a>
@@ -186,20 +290,6 @@
             <a href="signal-filter.html">→ 六大信号自定义筛选</a>
             <a href="detail-page.html">→ 代币详情页布局</a>
           </div>
-        </div>
-
-        <div class="card disabled">
-          <div class="icon">📖</div>
-          <h3>基础知识</h3>
-          <p>市场结构、K线基础、仓位管理、术语表</p>
-          <span class="soon-tag">内容整理中</span>
-        </div>
-
-        <div class="card disabled">
-          <div class="icon">📊</div>
-          <h3>信号系统</h3>
-          <p>信号使用规则、信号类型、历史案例、战法区</p>
-          <span class="soon-tag">内容整理中</span>
         </div>
 
         <div class="card">
@@ -221,10 +311,17 @@
             <p>每日复盘、直播回放、按月视图</p>
           </a>
           <div class="sub-links">
-            <a href="recap.html">→ July 27 复盘</a>
+            <a href="recap.html">→ 最新复盘(8月14日)</a>
+            <a href="recap.html">→ 查看全部复盘</a>
           </div>
         </div>
 
+      </div>
+
+      <div class="soon-strip">
+        <span class="soon-strip-label">即将上线</span>
+        <span class="soon-strip-item">📖 基础知识 —— 市场结构、K线基础、仓位管理、术语表</span>
+        <span class="soon-strip-item">📊 信号系统 —— 信号使用规则、历史案例、战法区</span>
       </div>
     </div>
   </section>
@@ -232,7 +329,7 @@
   <section>
     <div class="wrap">
       <h2>官方资源</h2>
-      <p class="section-sub">同步到 Notion 里的官方链接,这边也放一份。</p>
+      <p class="section-sub">更多官方教程、策略代码与机器人入口。</p>
       <div class="external-row">
         <a class="pill" href="https://logearn.gitbook.io/logearn-jiao-cheng-wen-dang" target="_blank">LogEarn GitBook 教程文档</a>
         <a class="pill" href="https://github.com/logearn/logearn-ai-strategies" target="_blank">官方策略库(GitHub)</a>
@@ -245,5 +342,6 @@
     <div class="wrap">LogEarn Academy · 知识库首页</div>
   </footer>
 
+  <script src="search.js"></script>
 </body>
 </html>
